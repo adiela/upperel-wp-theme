@@ -314,3 +314,10 @@ $upperel-bleed: calc(50% - 50vw);
 		}
 	}
 }
+
+// Main shop page: its visible title is hidden (inc/upperel-woocommerce.php),
+// so drop Storefront's space below the header and let the page content
+// (the slider) sit right under it. Category/tag archives keep the space.
+.woocommerce-shop #masthead {
+	margin-bottom: 0;
+}
