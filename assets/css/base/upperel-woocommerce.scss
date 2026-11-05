@@ -1,0 +1,281 @@
+/**
+ * Upperel WooCommerce layout tweaks.
+ *
+ * Uses the same Susy grid as Storefront's woocommerce.scss so widths and
+ * gutters line up with the rest of the layout. Loaded after Storefront's
+ * WooCommerce styles by inc/upperel-styles.php, so the equal-specificity
+ * selectors below win.
+ */
+
+@import "bourbon";
+@import "../sass/utils/variables";
+@import "../sass/utils/mixins";
+@import "susy";
+@import "../sass/vendors/modular-scale";
+
+@include susy-media($desktop) {
+
+	// Single product: image and details columns the same width.
+	// Storefront defaults: 4/9 + 5/9 with a sidebar, 5/12 + 7/12 full width.
+	.single-product div.product {
+
+		.woocommerce-product-gallery {
+
+			@include span(4.5 of 9);
+		}
+
+		.summary {
+
+			@include span(last 4.5 of 9);
+		}
+	}
+
+	.storefront-full-width-content.single-product div.product {
+
+		.woocommerce-product-gallery {
+
+			@include span(6 of 12);
+		}
+
+		.summary {
+
+			@include span(last 6 of 12);
+		}
+	}
+}
+
+// Single product: cap the main image's height so it and the gallery
+// thumbnails fit in the first screen without scrolling.
+// --upperel-gallery-offset (set by assets/js/single-product.js) is the
+// space above the image (admin bar, header, gap) plus the thumbnail strip
+// below it. Before the script runs it falls back to the full screen height.
+// The zoom overlay (.zoomImg) and thumbnails are not matched.
+.single-product div.product .woocommerce-product-gallery .woocommerce-product-gallery__image > a img {
+	width: auto;
+	max-width: 100%;
+	max-height: calc(100vh - var(--upperel-gallery-offset, 0px));
+	margin-right: auto;
+	margin-left: auto;
+
+	// Small viewport height: stays correct while mobile browser bars show.
+	@supports (height: 100svh) {
+		max-height: calc(100svh - var(--upperel-gallery-offset, 0px));
+	}
+}
+
+// Single product gallery slider: dots and arrows (enabled in
+// inc/upperel-woocommerce.php), in one row centred below the image:
+// [prev] [dots] [next]. The gallery becomes a wrapping flex container; the
+// image area takes the full first line and the arrows' list is flattened
+// (display: contents) so the dots can sit between them.
+$upperel-gallery-control-color: #333;
+$upperel-gallery-control-border: rgba(127, 127, 127, 0.4); // As form fields.
+
+.single-product div.product .woocommerce-product-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	column-gap: 16px;
+
+	> .flex-viewport,
+	> .woocommerce-product-gallery__wrapper {
+		flex: 0 0 100%;
+	}
+
+	// Storefront spaces the viewport from the (removed) thumbnail strip;
+	// the control row's own top margin sets the gap instead.
+	> .flex-viewport {
+		margin-bottom: 0;
+	}
+
+	// Dots.
+	.flex-control-paging {
+		order: 2;
+		display: flex;
+		gap: 10px;
+		margin: 16px 0 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		a {
+			display: block;
+			width: 10px;
+			height: 10px;
+			overflow: hidden;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.2);
+			font-size: 0;
+			line-height: 0;
+			text-indent: -9999px;
+			cursor: pointer;
+			transition: background-color 0.2s ease, transform 0.2s ease;
+
+			&:hover {
+				background: rgba(0, 0, 0, 0.45);
+			}
+
+			&.flex-active {
+				background: $upperel-gallery-control-color;
+				transform: scale(1.2);
+			}
+
+			&:focus-visible {
+				outline: 2px solid $upperel-gallery-control-color;
+				outline-offset: 3px;
+			}
+		}
+	}
+
+	// Arrows: the list is flattened so its two items join the row.
+	.flex-direction-nav {
+		display: contents;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin: 16px 0 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.flex-nav-prev {
+			order: 1;
+		}
+
+		.flex-nav-next {
+			order: 3;
+		}
+
+		a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			overflow: hidden;
+			border: 1px solid $upperel-gallery-control-border;
+			border-radius: 50%;
+			background: transparent;
+			color: $upperel-gallery-control-color;
+			font-size: 0;
+			text-decoration: none;
+			transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+
+			// Chevron drawn with two borders, so it needs no icon font.
+			&::before {
+				content: "";
+				width: 9px;
+				height: 9px;
+				border-top: 2px solid currentcolor;
+				border-left: 2px solid currentcolor;
+			}
+
+			&:hover,
+			&:focus-visible {
+				border-color: $upperel-gallery-control-color;
+				background: rgba(127, 127, 127, 0.1);
+				color: $upperel-gallery-control-color;
+			}
+
+			&:focus-visible {
+				outline: 2px solid $upperel-gallery-control-color;
+				outline-offset: 2px;
+			}
+
+			// First/last image: nowhere to go (the slider doesn't loop).
+			// Faded rather than hidden so the row doesn't shift.
+			&.flex-disabled {
+				opacity: 0.3;
+				pointer-events: none;
+			}
+		}
+
+		.flex-prev::before {
+			margin-left: 4px;
+			transform: rotate(-45deg);
+		}
+
+		.flex-next::before {
+			margin-right: 4px;
+			transform: rotate(135deg);
+		}
+	}
+}
+
+// Single product: collapsible sections (Reviews, Additional information),
+// replacing the tabs (inc/upperel-woocommerce.php). Closed until opened.
+$upperel-section-border: rgba(127, 127, 127, 0.25);
+
+.upperel-product-sections {
+	clear: both;
+	margin: 0 0 ms(5);
+	border-top: 1px solid $upperel-section-border;
+}
+
+.upperel-product-section {
+	border-bottom: 1px solid $upperel-section-border;
+
+	&__title {
+		display: flex;
+		align-items: center;
+		justify-content: center; // Label and chevron together, centred.
+		gap: 1em;
+		padding: 1.25em 0;
+		color: $color_body;
+		font-size: ms(2);
+		font-weight: 400;
+		list-style: none;
+		cursor: pointer;
+
+		// Hide the browser's own disclosure triangle.
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		// Chevron drawn with two borders; points down, up when open.
+		&::after {
+			content: "";
+			flex: 0 0 auto;
+			width: 9px;
+			height: 9px;
+			margin: -4px 4px 0 0;
+			border-right: 2px solid currentcolor;
+			border-bottom: 2px solid currentcolor;
+			transform: rotate(45deg);
+			transition: transform 0.2s ease;
+		}
+
+		&:hover {
+			color: darken($color_body, 25%);
+		}
+
+		&:focus-visible {
+			outline: 2px solid #333;
+			outline-offset: 2px;
+		}
+	}
+
+	&[open] &__title::after {
+		margin-top: 4px;
+		transform: rotate(-135deg);
+	}
+
+	&__panel {
+		padding: 0 0 ms(3);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+
+		&__title::after {
+			transition: none;
+		}
+	}
+}
