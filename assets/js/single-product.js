@@ -10,7 +10,10 @@
  *      max-height: calc(100svh - var(--upperel-gallery-offset))
  *    on the main image(s).
  *
- * 2. Collapsed sections (Reviews etc., inc/upperel-woocommerce.php): open
+ * 2. Quantity − / + buttons (added in inc/upperel-woocommerce.php): step
+ *    the field within its min/max/step and disable at the limits.
+ *
+ * 3. Collapsed sections (Reviews etc., inc/upperel-woocommerce.php): open
  *    the right section when the page is opened at, or a link points to,
  *    #reviews or a review (#comment-…), e.g. the "customer reviews" link by
  *    the price, or the redirect after posting a review.
@@ -151,6 +154,88 @@
 			openFor( link.hash, false );
 		} );
 	}
+
+	function initQuantity( wrapper ) {
+		const minus = wrapper.querySelector( '.upperel-qty__button--minus' );
+		const plus = wrapper.querySelector( '.upperel-qty__button--plus' );
+		if ( ! minus || ! plus ) {
+			return;
+		}
+		const input = wrapper.querySelector( 'input.qty' );
+
+		// Hidden or read-only field: the quantity is fixed, no buttons.
+		if ( ! input || input.type === 'hidden' || input.readOnly ) {
+			minus.remove();
+			plus.remove();
+			return;
+		}
+		wrapper.classList.add( 'upperel-qty' );
+
+		function limits() {
+			const min = parseFloat( input.min );
+			const max = parseFloat( input.max );
+			return {
+				min: isNaN( min ) ? 0 : min,
+				max: isNaN( max ) ? Infinity : max,
+			};
+		}
+
+		function refresh() {
+			const value = parseFloat( input.value ) || 0;
+			const { min, max } = limits();
+			minus.disabled = value <= min;
+			plus.disabled = value >= max;
+		}
+
+		function step( direction ) {
+			const { min, max } = limits();
+			const stepSize = parseFloat( input.step ) || 1;
+			const value = parseFloat( input.value ) || 0;
+			const next = Math.min(
+				max,
+				Math.max( min, value + direction * stepSize )
+			);
+			if ( next === value ) {
+				return;
+			}
+			// Avoid floating-point noise for decimal steps (e.g. 0.1).
+			input.value = parseFloat( next.toFixed( 6 ) );
+			// Let WooCommerce and other scripts react as if typed.
+			input.dispatchEvent(
+				new window.Event( 'input', { bubbles: true } )
+			);
+			input.dispatchEvent(
+				new window.Event( 'change', { bubbles: true } )
+			);
+			refresh();
+		}
+
+		minus.addEventListener( 'click', function () {
+			step( -1 );
+		} );
+		plus.addEventListener( 'click', function () {
+			step( 1 );
+		} );
+		input.addEventListener( 'input', refresh );
+		input.addEventListener( 'change', refresh );
+
+		// Variable products: WooCommerce updates the field's min/max with
+		// jQuery when a variation is chosen, without a native event.
+		const form = wrapper.closest( 'form' );
+		if ( form && window.jQuery ) {
+			window
+				.jQuery( form )
+				.on( 'found_variation reset_data', function () {
+					window.setTimeout( refresh, 0 );
+				} );
+		}
+
+		refresh();
+	}
+
+	document
+		.querySelectorAll( '.single-product .quantity' )
+		.forEach( initQuantity );
 
 	const gallery = document.querySelector(
 		'.single-product div.product .woocommerce-product-gallery'

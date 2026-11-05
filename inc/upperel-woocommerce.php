@@ -210,3 +210,26 @@ function upperel_product_sections() {
 	</div>
 	<?php
 }
+
+/**
+ * Single product: − and + buttons around the quantity field, styled like
+ * the cart page's quantity selector (upperel-woocommerce.scss). The
+ * script in assets/js/single-product.js makes them work, and removes them
+ * where the field is hidden or read-only (a fixed quantity).
+ */
+function upperel_quantity_minus_button() {
+	if ( is_product() ) {
+		echo '<button type="button" class="upperel-qty__button upperel-qty__button--minus" aria-label="' . esc_attr__( 'Reduce quantity', 'storefront' ) . '">&minus;</button>';
+	}
+}
+add_action( 'woocommerce_before_quantity_input_field', 'upperel_quantity_minus_button' );
+
+/**
+ * See upperel_quantity_minus_button().
+ */
+function upperel_quantity_plus_button() {
+	if ( is_product() ) {
+		echo '<button type="button" class="upperel-qty__button upperel-qty__button--plus" aria-label="' . esc_attr__( 'Increase quantity', 'storefront' ) . '">+</button>';
+	}
+}
+add_action( 'woocommerce_after_quantity_input_field', 'upperel_quantity_plus_button' );

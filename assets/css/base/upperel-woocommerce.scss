@@ -279,3 +279,79 @@ $upperel-section-border: rgba(127, 127, 127, 0.25);
 		}
 	}
 }
+
+// Single product: quantity field with − / + buttons (added in
+// inc/upperel-woocommerce.php), styled like the cart page's quantity
+// selector but a little bigger (cart: 44px tall, 30px buttons, 14px text).
+$upperel-qty-border: rgba(109, 109, 109, 0.3); // As the cart's selector.
+
+.single-product .quantity.upperel-qty {
+	display: inline-flex;
+	align-items: stretch;
+	height: 50px;
+	border: 1px solid $upperel-qty-border;
+	border-radius: 4px;
+	background-color: #fff;
+
+	// Show focus on the whole box, like the other form fields.
+	&:focus-within {
+		border-color: #333;
+	}
+
+	.qty {
+		width: 80px;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		color: $color_body;
+		font-size: 16px;
+		text-align: center;
+		outline: none;
+		appearance: textfield;
+
+		// No browser spinner arrows; the − / + buttons replace them.
+		&::-webkit-inner-spin-button,
+		&::-webkit-outer-spin-button {
+			margin: 0;
+			appearance: none;
+		}
+	}
+
+	.upperel-qty__button {
+		flex: 0 0 auto;
+		width: 36px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		color: $color_body;
+		font-size: 18px;
+		font-weight: 400;
+		line-height: 1;
+		opacity: 0.6;
+		cursor: pointer;
+		transition: opacity 0.2s ease;
+
+		&:hover:not(:disabled) {
+			background: transparent;
+			color: $color_body;
+			opacity: 1;
+		}
+
+		&:disabled {
+			opacity: 0.3;
+			cursor: default;
+		}
+
+		&:focus-visible {
+			outline: 2px solid #333;
+			outline-offset: -2px;
+		}
+	}
+}
