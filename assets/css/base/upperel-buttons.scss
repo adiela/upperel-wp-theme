@@ -10,6 +10,7 @@
  * Loaded after Storefront's and WooCommerce's stylesheets.
  */
 
+$upperel-button-radius: 4px; // Same as form fields (upperel-forms.scss).
 $upperel-button-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
 $upperel-button-shadow-hover: 0 6px 14px rgba(0, 0, 0, 0.2);
 
@@ -26,6 +27,7 @@ input[type="submit"],
 	text-align: center;
 	text-transform: uppercase;
 	letter-spacing: 0.06em;
+	border-radius: $upperel-button-radius;
 	box-shadow: $upperel-button-shadow;
 	transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 
