@@ -75,6 +75,14 @@ $upperel_wrapper = get_block_wrapper_attributes(
 		'data-interval'        => (string) $upperel_interval,
 	)
 );
+
+/*
+ * Buffer the markup so whitespace can be stripped before it is returned.
+ * WooCommerce passes the Shop page content through wpautop() *after* blocks
+ * render, which turns line breaks into <br> and <p> tags that push the
+ * images apart (the "black bars").
+ */
+ob_start();
 ?>
 <div <?php echo $upperel_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 	<div class="upperel-slider__viewport">
@@ -115,17 +123,20 @@ $upperel_wrapper = get_block_wrapper_attributes(
 	</div>
 
 	<?php if ( $upperel_show_arrows ) : ?>
+		<div class="upperel-slider__nav">
 		<button type="button" class="upperel-slider__arrow upperel-slider__arrow--prev" aria-label="<?php esc_attr_e( 'Previous slide', 'storefront' ); ?>">
 			<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 		</button>
 		<button type="button" class="upperel-slider__arrow upperel-slider__arrow--next" aria-label="<?php esc_attr_e( 'Next slide', 'storefront' ); ?>">
 			<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 		</button>
+		</div>
 	<?php endif; ?>
 
 	<?php if ( $upperel_show_dots || $upperel_autoplay ) : ?>
 		<div class="upperel-slider__controls">
 			<?php if ( $upperel_autoplay ) : ?>
+				<div class="upperel-slider__toggle-wrap">
 				<button
 					type="button"
 					class="upperel-slider__toggle"
@@ -136,6 +147,7 @@ $upperel_wrapper = get_block_wrapper_attributes(
 					<svg class="upperel-slider__icon-pause" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/></svg>
 					<svg class="upperel-slider__icon-play" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
 				</button>
+				</div>
 			<?php endif; ?>
 
 			<?php if ( $upperel_show_dots ) : ?>
@@ -154,3 +166,10 @@ $upperel_wrapper = get_block_wrapper_attributes(
 		</div>
 	<?php endif; ?>
 </div>
+<?php
+// Collapse all line breaks (also inside attributes), then the gaps between tags.
+echo preg_replace( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped above.
+	array( '/\s*\n\s*/', '/>\s+</' ),
+	array( ' ', '><' ),
+	trim( ob_get_clean() )
+);
