@@ -1,0 +1,114 @@
+/**
+ * Upperel form fields: white background, full border, roomier padding and
+ * slightly rounded corners.
+ *
+ * Same selector list as Storefront's field styles in _base.scss, so it
+ * covers the same fields and wins by loading later. Fields with more
+ * specific styles of their own keep them: the header search field and
+ * WooCommerce Blocks (cart/checkout) inputs with floating labels.
+ *
+ * Dropdowns (selects) get the same look, with a matching chevron in place
+ * of the browser's native arrow.
+ *
+ * Loaded by inc/upperel-styles.php.
+ */
+
+@import "../sass/utils/variables";
+
+$upperel-field-padding: 0.75rem 1rem; // 12px 16px, whatever the field's font size.
+$upperel-field-radius: 4px;
+$upperel-field-bg: #fff;
+$upperel-field-border: rgba(127, 127, 127, 0.4); // Same as the header search box.
+$upperel-field-border-focus: #333;
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+textarea,
+.input-text,
+select {
+	padding: $upperel-field-padding;
+	border: 1px solid $upperel-field-border;
+	border-radius: $upperel-field-radius;
+	background-color: $upperel-field-bg;
+	box-shadow: none;
+	color: $color_body;
+	font-weight: 400;
+
+	&:focus {
+		border-color: $upperel-field-border-focus;
+		background-color: $upperel-field-bg;
+	}
+}
+
+select {
+	line-height: 1.618;
+}
+
+// WooCommerce password fields: the "show password" eye button sits inside
+// the right end of the field. Keep it transparent within the border and
+// leave room so typed text doesn't run under it.
+.password-input {
+
+	input {
+		padding-right: 3rem;
+	}
+
+	.show-password-input {
+		top: 1px;
+		right: 1px;
+		bottom: 1px;
+		display: flex;
+		align-items: center;
+		padding: 0 1rem;
+		border: 0;
+		border-radius: 0 $upperel-field-radius $upperel-field-radius 0;
+		background: transparent;
+		box-shadow: none;
+		color: $color_body;
+
+		&:hover {
+			background: transparent;
+			color: darken($color_body, 25%);
+		}
+	}
+}
+
+// Single-choice dropdowns only: list boxes ([multiple], [size]) keep the
+// native control and get no arrow.
+select:not([multiple]):not([size]) {
+	padding-right: 2.75rem;
+	appearance: none;
+	// stylelint-disable-next-line function-url-quotes -- Inline SVG needs quoting.
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236d6d6d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+	background-position: right 1rem center;
+	background-repeat: no-repeat;
+	background-size: 14px 14px;
+	cursor: pointer;
+}
+
+// Shop sorting row (desktop): the taller sorting dropdown would leave the
+// result count and pagination top-aligned, so centre the row's items.
+// Storefront floats them; flex ignores the floats.
+@media (min-width: $desktop) {
+
+	.storefront-sorting {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+
+		// Clearfix pseudo-elements would become flex items.
+		&::before,
+		&::after {
+			display: none;
+		}
+
+		.woocommerce-pagination {
+			margin-left: auto;
+		}
+	}
+}

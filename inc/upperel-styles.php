@@ -22,10 +22,12 @@ function upperel_styles() {
 		}
 	}
 
-	$css = '/assets/css/base/upperel-buttons.css';
-	$ver = file_exists( $theme_dir . $css ) ? (string) filemtime( $theme_dir . $css ) : null;
+	foreach ( array( 'buttons', 'forms' ) as $sheet ) {
+		$css = '/assets/css/base/upperel-' . $sheet . '.css';
+		$ver = file_exists( $theme_dir . $css ) ? (string) filemtime( $theme_dir . $css ) : null;
 
-	wp_enqueue_style( 'upperel-buttons', $theme_uri . $css, $deps, $ver );
-	wp_style_add_data( 'upperel-buttons', 'rtl', 'replace' );
+		wp_enqueue_style( 'upperel-' . $sheet, $theme_uri . $css, $deps, $ver );
+		wp_style_add_data( 'upperel-' . $sheet, 'rtl', 'replace' );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'upperel_styles', 25 );

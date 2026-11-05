@@ -253,14 +253,15 @@ $upperel-bleed: calc(50% - 50vw);
 			visibility 0s;
 	}
 
+	// Same padding and corner radius as the site's other form fields
+	// (assets/css/base/upperel-forms.scss); rem keeps it 12px/16px.
 	.upperel-header-search__form {
 		display: flex;
 		align-items: center;
-		height: 44px;
 		margin: 0;
-		padding: 0 2px 0 18px;
+		padding: 0 2px 0 0;
 		border: 1px solid rgba(127, 127, 127, 0.4);
-		border-radius: 999px;
+		border-radius: 4px;
 		background-color: var(--upperel-header-bg, #fff);
 
 		&:focus-within {
@@ -272,11 +273,11 @@ $upperel-bleed: calc(50% - 50vw);
 	.upperel-header-search__field {
 		flex: 1 1 auto;
 		min-width: 0;
-		height: 40px;
+		height: auto;
 		margin: 0;
-		padding: 0;
+		padding: 0.75rem 1rem;
 		border: 0;
-		border-radius: 0;
+		border-radius: 4px 0 0 4px;
 		background: transparent;
 		box-shadow: none;
 		color: var(--upperel-header-text, #404040);
