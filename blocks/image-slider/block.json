@@ -1,0 +1,62 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "upperel/image-slider",
+	"version": "1.0.0",
+	"title": "Image Slider",
+	"category": "media",
+	"icon": "slides",
+	"description": "A full screen width slider of images. Each slide can link to a different page.",
+	"keywords": [ "slider", "carousel", "slideshow", "hero", "banner" ],
+	"textdomain": "storefront",
+	"attributes": {
+		"slides": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"height": {
+			"type": "number",
+			"default": 70
+		},
+		"mobileHeight": {
+			"type": "number",
+			"default": 50
+		},
+		"transition": {
+			"type": "string",
+			"enum": [ "slide", "fade" ],
+			"default": "slide"
+		},
+		"autoplay": {
+			"type": "boolean",
+			"default": true
+		},
+		"interval": {
+			"type": "number",
+			"default": 5
+		},
+		"showArrows": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDots": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"spacing": {
+			"margin": [ "top", "bottom" ]
+		}
+	},
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"style": "upperel-image-slider",
+	"editorStyle": "upperel-image-slider-editor",
+	"render": "file:./render.php"
+}

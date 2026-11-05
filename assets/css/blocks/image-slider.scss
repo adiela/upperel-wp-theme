@@ -1,0 +1,273 @@
+/**
+ * Image Slider block (upperel/image-slider) – front-end styles.
+ *
+ * Full-bleed: the slider breaks out of whatever container it sits in.
+ * view.js sets --upperel-slider-width / --upperel-slider-offset precisely;
+ * the calc() fallback works for centred containers before JS runs.
+ */
+
+$upperel-slider-desktop: 768px;
+$upperel-slider-speed: 0.6s;
+
+.upperel-slider {
+	--upperel-slider-current-height: var(--upperel-slider-height-mobile, 50vh);
+
+	position: relative;
+	box-sizing: border-box;
+	width: var(--upperel-slider-width, 100vw);
+	max-width: none;
+	margin-inline-start: var(--upperel-slider-offset, calc(50% - 50vw));
+	margin-inline-end: 0;
+	overflow: hidden;
+	background: #111;
+	color: #fff;
+
+	@media (min-width: $upperel-slider-desktop) {
+		--upperel-slider-current-height: var(--upperel-slider-height, 70vh);
+	}
+
+	&__viewport {
+		position: relative;
+		height: var(--upperel-slider-current-height);
+		min-height: 240px;
+		overflow: hidden;
+		touch-action: pan-y;
+	}
+
+	// Reset Storefront list styles.
+	& &__track {
+		display: flex;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		transition: transform $upperel-slider-speed cubic-bezier(0.22, 0.61, 0.36, 1);
+		will-change: transform;
+	}
+
+	& &__slide {
+		position: relative;
+		flex: 0 0 100%;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	&__link {
+		display: block;
+		width: 100%;
+		height: 100%;
+
+		&:focus-visible {
+			outline: 3px solid #fff;
+			outline-offset: -6px;
+		}
+	}
+
+	// Beat Storefront's `img { height: auto; border-radius }` rules.
+	& &__img {
+		display: block;
+		width: 100%;
+		max-width: none;
+		height: 100%;
+		margin: 0;
+		border-radius: 0;
+		object-fit: cover;
+		user-select: none;
+		-webkit-user-drag: none;
+	}
+
+	// Fade: stack slides on top of each other.
+	&.is-transition-fade &__track {
+		display: block;
+		transition: none;
+	}
+
+	&.is-transition-fade &__slide {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity $upperel-slider-speed ease, visibility 0s linear $upperel-slider-speed;
+
+		&.is-active {
+			z-index: 1;
+			opacity: 1;
+			visibility: visible;
+			transition: opacity $upperel-slider-speed ease, visibility 0s;
+		}
+	}
+
+	// Controls ---------------------------------------------------------------
+
+	& &__arrow,
+	& &__toggle,
+	& &__dot {
+		appearance: none;
+		margin: 0;
+		border: 0;
+		box-shadow: none;
+		cursor: pointer;
+		font-size: 0;
+		line-height: 0;
+		text-shadow: none;
+	}
+
+	& &__arrow {
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+		padding: 0;
+		border-radius: 50%;
+		background: rgba(0, 0, 0, 0.35);
+		color: #fff;
+		transform: translateY(-50%);
+		transition: background-color 0.2s ease, opacity 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			background: rgba(0, 0, 0, 0.6);
+			color: #fff;
+		}
+
+		&:focus-visible {
+			outline: 2px solid #fff;
+			outline-offset: 2px;
+		}
+
+		svg {
+			display: block;
+		}
+	}
+
+	& &__arrow--prev {
+		inset-inline-start: 16px;
+	}
+
+	& &__arrow--next {
+		inset-inline-end: 16px;
+	}
+
+	// Arrows point the other way in RTL.
+	&:dir(rtl) &__arrow svg {
+		transform: scaleX(-1);
+	}
+
+	&__controls {
+		position: absolute;
+		bottom: 16px;
+		left: 50%;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 6px 12px;
+		border-radius: 999px;
+		background: rgba(0, 0, 0, 0.35);
+		transform: translateX(-50%);
+	}
+
+	&__dots {
+		display: flex;
+		gap: 8px;
+	}
+
+	& &__dot {
+		width: 10px;
+		height: 10px;
+		padding: 0;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.5);
+		transition: background-color 0.2s ease, transform 0.2s ease;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.8);
+		}
+
+		&[aria-current="true"] {
+			background: #fff;
+			transform: scale(1.25);
+		}
+
+		&:focus-visible {
+			outline: 2px solid #fff;
+			outline-offset: 3px;
+		}
+	}
+
+	& &__toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		padding: 0;
+		background: transparent;
+		color: #fff;
+
+		&:hover {
+			background: transparent;
+			color: #fff;
+		}
+
+		&:focus-visible {
+			outline: 2px solid #fff;
+			outline-offset: 2px;
+			border-radius: 50%;
+		}
+
+		&[hidden] {
+			display: none;
+		}
+	}
+
+	&__icon-play {
+		display: none;
+	}
+
+	&.is-paused &__icon-play {
+		display: block;
+	}
+
+	&.is-paused &__icon-pause {
+		display: none;
+	}
+
+	// Small screens: smaller arrows, tucked closer to the edge.
+	@media (max-width: #{$upperel-slider-desktop - 1}) {
+
+		& &__arrow {
+			width: 36px;
+			height: 36px;
+		}
+
+		& &__arrow--prev {
+			inset-inline-start: 8px;
+		}
+
+		& &__arrow--next {
+			inset-inline-end: 8px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+
+		& &__track,
+		&.is-transition-fade &__slide {
+			transition: none;
+		}
+	}
+}
+
+// Keep the slider flush against the header when it is the first block on a
+// full-width page, matching Storefront's handling of full-width covers.
+.hentry .entry-content > .upperel-slider:first-child {
+	margin-top: 0;
+}
