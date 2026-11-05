@@ -20,6 +20,61 @@ It features deep integration with WooCommerce core plus several of the most popu
 
 For developers, Storefront is the perfect starting point for your project. Its lean and extensible codebase will allow you to easily add functionality to your site via a child theme and/or custom plugin(s).
 
+## Upperel customizations
+
+Upperel is based on Storefront and adds the theme-specific features below.
+
+### Custom blocks
+
+Custom blocks live in `blocks/<name>/` and are registered in `inc/upperel-blocks.php`. They need no JavaScript build step: each editor script uses the global `wp.*` packages, and its dependencies are listed in the matching `*.asset.php` file. Block stylesheets are in `assets/css/blocks/`, so the normal `npm run build:css` compiles them, adds vendor prefixes and generates the RTL versions.
+
+> **Note:** `.gitignore` excludes compiled `.css` files. Run `npm run build:css` (or `npm run build`) after cloning and before deploying, or the blocks will have no styles.
+
+#### Image Slider (`upperel/image-slider`)
+
+A slider that always fills the full width of the screen, even inside a narrower content column. Each slide can link to a different page.
+
+**Using it in the editor**
+
+1. Add the **Image Slider** block (it's in the Media category; search "slider").
+2. Upload or pick several images at once.
+3. Click a thumbnail under the preview to select that slide. In the block sidebar:
+    - **Link to**: search for a page by name or paste any URL. Leave it empty for no link.
+    - **Open in new tab**: open the link in a new tab.
+    - **Alternative text**: describe the image for screen readers.
+4. Use the block toolbar to replace the selected image, move the slide earlier or later, or remove it. The **+** button under the preview adds more images.
+
+**Slider settings**
+
+| Setting | Default | Notes |
+| --- | --- | --- |
+| Height (desktop) | 70% of screen height | Applies at 768px wide and above; minimum 240px |
+| Height (mobile) | 50% of screen height | Applies below 768px; minimum 240px |
+| Transition | Slide | Slide or Fade |
+| Autoplay | On | Off for visitors whose device is set to reduce motion |
+| Seconds per slide | 5 | 2–30 |
+| Show arrows / dots | On | Hidden when there is only one slide |
+
+The block also supports top and bottom margins and an HTML anchor.
+
+**On the site**
+
+- Visitors can use the arrows or dots, swipe on touch screens, or press the left and right arrow keys. A swipe never opens the slide's link.
+- Autoplay pauses while the slider is hovered or focused, or the browser tab is hidden. When autoplay is on, a pause/play button appears next to the dots.
+- Images are cropped from the centre to fill the slider height.
+- Only the first image loads straight away; each later image loads just before it's shown.
+
+**Files**
+
+| File | Purpose |
+| --- | --- |
+| `blocks/image-slider/block.json` | Block settings and attributes |
+| `blocks/image-slider/index.js` | Editor interface |
+| `blocks/image-slider/render.php` | Front-end markup (rendered on the server) |
+| `blocks/image-slider/view.js` | Front-end slider behaviour |
+| `assets/css/blocks/image-slider.scss` | Front-end styles |
+| `assets/css/blocks/image-slider-editor.scss` | Editor-only styles |
+
 ## Storefront Status
 
 Please read [this document](./STOREFRONT_STATUS.md) explaining the current status of Storefront development.
