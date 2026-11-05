@@ -34,6 +34,7 @@ require 'inc/storefront-template-functions.php';
 require 'inc/wordpress-shims.php';
 require 'inc/upperel-blocks.php';
 require 'inc/upperel-header.php';
+require 'inc/upperel-styles.php';
 
 if ( class_exists( 'Jetpack' ) ) {
 	$storefront->jetpack = require 'inc/jetpack/class-storefront-jetpack.php';

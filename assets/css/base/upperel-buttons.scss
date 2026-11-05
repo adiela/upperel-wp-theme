@@ -1,0 +1,99 @@
+/**
+ * Upperel buttons: uppercase, full width, with a shadow.
+ *
+ * Targets action buttons only: theme/WooCommerce `.button`s, form
+ * submit/reset inputs, block-editor Button blocks and WooCommerce Blocks
+ * buttons. Bare <button> elements used as UI controls (slider arrows and
+ * dots, header icons, the mobile Menu toggle, submenu toggles) are left
+ * alone, as are search buttons that sit inline beside their field.
+ *
+ * Loaded after Storefront's and WooCommerce's stylesheets.
+ */
+
+$upperel-button-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+$upperel-button-shadow-hover: 0 6px 14px rgba(0, 0, 0, 0.2);
+
+.button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+.added_to_cart,
+.wp-block-button__link,
+.wc-block-components-button:not(.is-link) {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	box-shadow: $upperel-button-shadow;
+	transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+
+	&:hover {
+		box-shadow: $upperel-button-shadow-hover;
+		transform: translateY(-1px);
+	}
+
+	&:active {
+		box-shadow: $upperel-button-shadow;
+		transform: none;
+	}
+
+	&:disabled,
+	&.disabled {
+		box-shadow: none;
+		transform: none;
+	}
+}
+
+// Storefront underlines links in page content (`.hentry .entry-content a`)
+// and only exempts `.button`; link-style buttons from blocks need this.
+.hentry .entry-content {
+
+	a.wp-block-button__link,
+	a.wc-block-components-button:not(.is-link) {
+		text-decoration: none;
+	}
+}
+
+// Block-editor Button blocks: let the wrapper span the row too.
+.wp-block-buttons > .wp-block-button,
+.wp-block-button {
+	flex-basis: 100%;
+	width: 100%;
+}
+
+// Product grid: "View cart" link appears under the full-width button.
+ul.products li.product .added_to_cart {
+	margin-top: 0.5em;
+}
+
+// Single product: quantity box goes above the full-width Add to cart.
+.single-product div.product form.cart {
+
+	.quantity {
+		float: none;
+		margin: 0 0 1em;
+	}
+
+	.single_add_to_cart_button {
+		float: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.button,
+	input[type="button"],
+	input[type="reset"],
+	input[type="submit"],
+	.added_to_cart,
+	.wp-block-button__link,
+	.wc-block-components-button:not(.is-link) {
+		transition: none;
+
+		&:hover {
+			transform: none;
+		}
+	}
+}
