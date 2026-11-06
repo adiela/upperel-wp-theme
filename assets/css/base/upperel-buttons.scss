@@ -99,3 +99,25 @@ ul.products li.product .added_to_cart {
 		}
 	}
 }
+
+// WooCommerce Blocks buttons (e.g. "Place order", "Proceed to checkout")
+// lay out their label in flex boxes, where text-align has no effect. Keep
+// the button a (full-width) flex container rather than display: block, and
+// centre the label boxes, so the text is centred.
+.wc-block-components-button:not(.is-link) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.wc-block-components-button__text,
+	.wc-block-components-checkout-place-order-button__text {
+		justify-content: center;
+	}
+}
+
+// Storefront's style.css sets `.form-row .button { width: auto }`, which
+// outranks `.button` above, so buttons in form rows (Log in, Register,
+// Reset password) would stay narrow. Match it to keep them full width.
+.form-row .button {
+	width: 100%;
+}
