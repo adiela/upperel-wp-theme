@@ -524,3 +524,27 @@ $upperel-swatch-color: #333;
 		}
 	}
 }
+
+// My Account when logged out (login, registration, lost/reset password):
+// the account block (heading, notices, form, links) in a centred column.
+// The logged-in dashboard keeps its menu-and-content layout.
+$upperel-account-form-width: 640px;
+
+.woocommerce-account:not(.logged-in) .entry-content > .woocommerce {
+	max-width: $upperel-account-form-width;
+	margin-right: auto;
+	margin-left: auto;
+
+	// Login + Register (when registration is on): stacked, not side by
+	// side, in the narrow column.
+	#customer_login .u-column1,
+	#customer_login .u-column2 {
+		float: none;
+		width: 100%;
+		margin-right: 0;
+	}
+
+	#customer_login .u-column2 {
+		margin-top: ms(5);
+	}
+}
