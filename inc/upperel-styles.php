@@ -22,7 +22,7 @@ function upperel_styles() {
 		}
 	}
 
-	foreach ( array( 'buttons', 'forms', 'woocommerce', 'title', 'tailwind' ) as $sheet ) {
+	foreach ( array( 'buttons', 'forms', 'woocommerce', 'title', 'links', 'tailwind' ) as $sheet ) {
 		$css = '/assets/css/base/upperel-' . $sheet . '.css';
 		$ver = file_exists( $theme_dir . $css ) ? (string) filemtime( $theme_dir . $css ) : null;
 

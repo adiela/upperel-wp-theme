@@ -1,0 +1,27 @@
+/**
+ * Upperel links: no underline, coloured with the Customizer's
+ * "Link color" (--upperel-link-color, printed inline by
+ * inc/upperel-links.php).
+ *
+ * Loaded after Storefront's stylesheet and its inline Customizer CSS, so
+ * this `a` rule replaces Storefront's accent-coloured one. Links that
+ * Storefront colours more specifically (header, navigation, footer,
+ * widgets, buttons) keep their own colours.
+ */
+
+a,
+// Single product: the category and tag links in the product meta, which
+// Storefront colours like body text.
+.product_meta a {
+	color: var(--upperel-link-color, #7f54b3);
+}
+
+// Storefront and WooCommerce underline links in many places, often with
+// more specific selectors (.hentry .entry-content a, .cat-links a,
+// .woocommerce-breadcrumb a, notices...) and some only on hover. Turn the
+// underline off everywhere in one rule rather than chasing each one.
+a,
+a:hover,
+a:focus {
+	text-decoration: none !important;
+}
