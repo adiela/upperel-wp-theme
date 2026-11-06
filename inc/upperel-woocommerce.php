@@ -302,56 +302,6 @@ function upperel_quantity_plus_button() {
 add_action( 'woocommerce_after_quantity_input_field', 'upperel_quantity_plus_button' );
 
 /**
- * Product grids: no "Add to cart" / "Select options" button. Each card
- * links to the product page, where options and quantity are chosen.
- *
- * Covers every kind of product grid:
- * - Classic grids (Shop, categories/tags, Related products, Storefront's
- *   homepage sections, [products] shortcodes): unhook the loop button.
- * - Product Collection and other blocks built from the "Add to Cart
- *   Button" block: blank that block (upperel_remove_block_product_button).
- * - Older grid blocks (Newest, Best Selling, On Sale, Hand-picked, Top
- *   Rated, Products by Category/Tag/Attribute): strip the button from each
- *   card (upperel_remove_grid_block_button).
- * - The "All Products" block renders in the browser, so its button is
- *   hidden with CSS instead (upperel-woocommerce.scss).
- */
-function upperel_remove_loop_add_to_cart() {
-	remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-}
-add_action( 'init', 'upperel_remove_loop_add_to_cart' );
-
-/**
- * Blank the "Add to Cart Button" block in product grids. It's kept where
- * it's the add-to-cart for a single product: inside a Single Product block
- * or an "Add to Cart with Options" block.
- *
- * @param string   $block_content Rendered block HTML.
- * @param array    $block         Parsed block.
- * @param WP_Block $instance      Block instance.
- * @return string
- */
-function upperel_remove_block_product_button( $block_content, $block, $instance = null ) {
-	$in_single_product = ! empty( $block['attrs']['isDescendentOfSingleProductBlock'] );
-	$in_add_to_cart    = $instance instanceof WP_Block && ! empty( $instance->context['woocommerce/isDescendantOfAddToCartWithOptions'] );
-
-	return ( $in_single_product || $in_add_to_cart ) ? $block_content : '';
-}
-add_filter( 'render_block_woocommerce/product-button', 'upperel_remove_block_product_button', 10, 3 );
-
-/**
- * Strip the button from each card of the older product grid blocks.
- *
- * @param string $html Card HTML.
- * @param object $data Card parts; $data->button is the button HTML.
- * @return string
- */
-function upperel_remove_grid_block_button( $html, $data ) {
-	return empty( $data->button ) ? $html : str_replace( $data->button, '', $html );
-}
-add_filter( 'woocommerce_blocks_product_grid_item_html', 'upperel_remove_grid_block_button', 10, 2 );
-
-/**
  * Single product: remove Storefront's previous/next product links (the
  * product thumbnails pinned to the left and right screen edges).
  *

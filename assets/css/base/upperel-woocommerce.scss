@@ -413,12 +413,6 @@ $upperel-qty-border: rgba(109, 109, 109, 0.3); // As the cart's selector.
 	}
 }
 
-// "All Products" block: it renders its cards in the browser, so the PHP
-// that removes grid buttons (inc/upperel-woocommerce.php) can't reach it.
-.wc-block-all-products .wc-block-components-product-button {
-	display: none;
-}
-
 // Product grids (classic: shop, categories/tags, Related products,
 // shortcodes), desktop only.
 $upperel-grid-width: 1200px; // Shop/category content; container is 1320px.
