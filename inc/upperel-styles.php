@@ -29,5 +29,13 @@ function upperel_styles() {
 		wp_enqueue_style( 'upperel-' . $sheet, $theme_uri . $css, $deps, $ver );
 		wp_style_add_data( 'upperel-' . $sheet, 'rtl', 'replace' );
 	}
+
+	// The Customizer's button background colour (Customize → Buttons), for
+	// outlined buttons' text and border in upperel-buttons.scss.
+	$button_bg = sanitize_hex_color( get_theme_mod( 'storefront_button_background_color' ) );
+	wp_add_inline_style(
+		'upperel-buttons',
+		sprintf( ':root{--upperel-button-bg:%s;}', $button_bg ? $button_bg : '#96588a' )
+	);
 }
 add_action( 'wp_enqueue_scripts', 'upperel_styles', 25 );

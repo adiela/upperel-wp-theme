@@ -48,6 +48,30 @@ input[type="submit"],
 	}
 }
 
+// Outlined buttons (Button blocks with the Outline style, WooCommerce
+// Blocks' outlined buttons): text and border in the solid buttons'
+// background colour (--upperel-button-bg, printed inline by
+// inc/upperel-styles.php). Storefront would otherwise give them the
+// solid buttons' text colour, white on a transparent background. Colours
+// picked for a block in the editor (.has-text-color) are kept.
+// WooCommerce Blocks draw their outline as an inset shadow in
+// currentColor, so it follows the text colour; on hover they fill in,
+// with WooCommerce's own colours.
+$upperel-button-bg: var(--upperel-button-bg, #96588a);
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color),
+.wc-block-components-button:not(.is-link).is-style-outline:not(.has-text-color),
+.wc-block-components-button:not(.is-link).outlined:not(.has-text-color) {
+
+	&,
+	&:hover,
+	&:focus,
+	&:active {
+		border-color: $upperel-button-bg;
+		color: $upperel-button-bg;
+	}
+}
+
 // Storefront underlines links in page content (`.hentry .entry-content a`)
 // and only exempts `.button`; link-style buttons from blocks need this.
 .hentry .entry-content {

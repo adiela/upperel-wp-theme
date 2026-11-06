@@ -15,18 +15,22 @@ $upperel-filters-ink: #333; // Same as the header and form field focus.
 $upperel-filters-line: rgba(127, 127, 127, 0.4); // Same as form fields.
 $upperel-filters-radius: 4px;
 $upperel-filters-width: 400px;
+// Solid buttons' background colour (printed inline by inc/upperel-styles.php).
+$upperel-filters-button: var(--upperel-button-bg, #96588a);
 
-// "Filters" button.
+// "Filters" button: outlined like the outlined buttons
+// (upperel-buttons.scss), with text and border in the solid buttons'
+// background colour.
 button.upperel-filters-toggle {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.5em;
 	margin: 0 1em 1em 0;
 	padding: 0.5em 1em;
-	border: 1px solid $upperel-filters-line;
+	border: 1px solid $upperel-filters-button;
 	border-radius: $upperel-filters-radius;
 	background: #fff;
-	color: $upperel-filters-ink;
+	color: $upperel-filters-button;
 	font-size: 1em;
 	font-weight: 600;
 	line-height: 1.618;
@@ -34,13 +38,13 @@ button.upperel-filters-toggle {
 
 	&:hover,
 	&:focus {
-		border-color: $upperel-filters-ink;
+		border-color: $upperel-filters-button;
 		background: #fff;
-		color: $upperel-filters-ink;
+		color: $upperel-filters-button;
 	}
 
 	&:focus-visible {
-		outline: 2px solid $upperel-filters-ink;
+		outline: 2px solid $upperel-filters-button;
 		outline-offset: 2px;
 	}
 }
@@ -53,7 +57,7 @@ button.upperel-filters-toggle {
 	min-width: 1.5em;
 	padding: 0 0.4em;
 	border-radius: 999px;
-	background: $upperel-filters-ink;
+	background: $upperel-filters-button;
 	color: #fff;
 	font-size: 0.8em;
 	line-height: 1.5em;
