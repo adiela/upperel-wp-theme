@@ -416,7 +416,7 @@ $upperel-qty-border: rgba(109, 109, 109, 0.3); // As the cart's selector.
 // Product grids (classic: shop, categories/tags, Related products,
 // shortcodes), desktop only.
 $upperel-grid-width: 1200px; // Shop/category content; container is 1320px.
-$upperel-grid-gap: 32px; // Storefront's float grid: ~4.35% (57px at 1320).
+$upperel-grid-gap: 16px; // Between cards, across and down; the cards' 12px padding adds to it.
 
 @include susy-media($desktop) {
 
@@ -549,6 +549,7 @@ $upperel-account-form-width: 640px;
 .site-main ul.products li.product,
 .wc-block-grid__product,
 .wc-block-product-template .wc-block-product {
+	margin-bottom: $upperel-grid-gap; // Between rows (Storefront: ~60px).
 	padding: 12px;
 	border-radius: 6px;
 	background-color: #fff;
