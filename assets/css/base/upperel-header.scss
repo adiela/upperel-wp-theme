@@ -64,6 +64,15 @@ $upperel-bleed: calc(50% - 50vw);
 		.site-description {
 			margin: 0;
 		}
+
+		// Logo (or site title) fades slightly on hover.
+		a {
+			transition: opacity 0.2s ease;
+
+			&:hover {
+				opacity: 0.7;
+			}
+		}
 	}
 
 	.custom-logo-link,
