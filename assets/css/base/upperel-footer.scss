@@ -1,0 +1,169 @@
+/**
+ * Upperel footer (inc/upperel-footer.php): brand, Shop, Help and Contact
+ * columns, then a bottom bar with the copyright line and legal links.
+ *
+ * One column on phones, two on tablets and small laptops, four from
+ * 1024px (the brand column wider). Colours come from Storefront's
+ * Customizer footer settings (background, text, headings, links), which
+ * these rules inherit.
+ *
+ * Loaded by inc/upperel-styles.php.
+ */
+
+@import "../sass/utils/variables";
+
+$upperel-footer-line: rgba(127, 127, 127, 0.25);
+$upperel-footer-wide: 1024px; // Four columns.
+
+.site-footer {
+	padding-top: 3.5rem;
+	font-size: 0.9375rem;
+}
+
+.upperel-footer {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 2.5rem;
+	padding-bottom: 3rem;
+
+	@media (min-width: $handheld) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@media (min-width: $upperel-footer-wide) {
+		// Brand, Shop, Help, Contact. Fewer columns (e.g. no contact
+		// details yet) leave the right-hand tracks empty.
+		grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+		gap: 3rem;
+	}
+}
+
+.upperel-footer__brand {
+	margin-bottom: 1rem;
+
+	.custom-logo-link {
+		display: inline-block;
+		margin: 0; // Storefront spaces the header logo.
+		vertical-align: top;
+	}
+
+	.custom-logo {
+		display: block;
+		width: auto;
+		max-width: 180px;
+		max-height: 48px;
+	}
+}
+
+.upperel-footer__site-title {
+	font-family: $header-font;
+	font-size: 1.5rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.upperel-footer__about {
+	max-width: 34ch;
+	margin: 0 0 1.25rem;
+	line-height: 1.7;
+}
+
+.upperel-footer__heading {
+	margin: 0 0 1rem;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.upperel-footer__links,
+.upperel-footer__contact,
+.upperel-footer__social,
+.upperel-footer-bottom__links {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.upperel-footer__links li {
+	margin: 0 0 0.6rem;
+}
+
+.upperel-footer__links a,
+.upperel-footer-bottom__links a {
+	transition: opacity 0.2s ease;
+
+	&:hover {
+		opacity: 0.65;
+	}
+}
+
+.upperel-footer__contact {
+
+	li {
+		display: flex;
+		gap: 0.75rem;
+		align-items: flex-start;
+		margin: 0 0 0.85rem;
+	}
+
+	.upperel-icon {
+		flex: none;
+		margin-top: 0.15em;
+		opacity: 0.75;
+	}
+
+	address {
+		margin: 0;
+		font-style: normal;
+	}
+
+	a {
+		overflow-wrap: anywhere;
+	}
+}
+
+.upperel-footer__social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		border: 1px solid $upperel-footer-line;
+		border-radius: 50%;
+		transition: border-color 0.2s ease, background-color 0.2s ease;
+
+		&:hover,
+		&:focus-visible {
+			border-color: currentColor;
+		}
+	}
+}
+
+// Bottom bar. Storefront styles .site-info; this replaces its layout.
+.site-footer .upperel-footer-bottom {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.5rem 0;
+	border-top: 1px solid $upperel-footer-line;
+	font-size: 0.8125rem;
+
+	p {
+		margin: 0;
+	}
+}
+
+.upperel-footer-bottom__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.5rem;
+}

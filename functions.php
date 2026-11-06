@@ -37,6 +37,7 @@ require 'inc/upperel-header.php';
 require 'inc/upperel-styles.php';
 require 'inc/upperel-links.php';
 require 'inc/upperel-shop-filters.php';
+require 'inc/upperel-footer.php';
 require 'inc/upperel-woocommerce.php';
 require 'inc/upperel-title-cover.php';
 
