@@ -44,10 +44,10 @@
 	}
 }
 
-// Single product: less space between the breadcrumb and the product:
-// ~31px on desktop, 24px on phones (the breadcrumb bar's bottom padding
-// plus this margin), instead of Storefront's ~82px / 42px.
-.single-product .storefront-breadcrumb {
+// All pages: less space between the breadcrumb and the content below
+// it: ~31px on desktop, 24px on phones (the breadcrumb bar's bottom
+// padding plus this margin), instead of Storefront's ~82px / 42px.
+.storefront-breadcrumb {
 	margin-bottom: 0.5rem;
 }
 

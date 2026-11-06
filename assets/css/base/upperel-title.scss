@@ -29,6 +29,21 @@ $upperel-title-tracking: 0.06em;
 	margin-bottom: 0;
 }
 
+// Product category/tag pages with a cover: the title is in the banner, so
+// the products header above the grid is empty unless the term has a
+// description. Storefront still pads it (~96px on desktop), which pushed
+// the toolbar far below the breadcrumb; drop that when it's empty.
+.has-title-cover .woocommerce-products-header:not(:has(*)) {
+	padding-bottom: 0;
+}
+
+// With the title in the banner, the content can start closer under the
+// breadcrumb: 16px (the bar's bottom padding plus its 8px margin from
+// upperel-woocommerce.scss) instead of ~31px / 24px.
+.has-title-cover .storefront-breadcrumb {
+	padding-bottom: 0.5rem;
+}
+
 .upperel-title-cover {
 	position: relative;
 	display: flex;
@@ -40,6 +55,12 @@ $upperel-title-tracking: 0.06em;
 
 	@include susy-media($desktop) {
 		min-height: 360px;
+	}
+
+	// With the breadcrumb right below, drop the banner's own space: the
+	// breadcrumb bar's top padding (~23px desktop, 16px phones) is enough.
+	&:has(+ .storefront-breadcrumb) {
+		margin-bottom: 0;
 	}
 
 	// Darken the image so the white title stays readable on any photo.
