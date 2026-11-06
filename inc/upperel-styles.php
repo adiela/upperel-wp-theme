@@ -57,7 +57,7 @@ function upperel_styles() {
 		}
 	}
 
-	foreach ( array( 'buttons', 'forms', 'woocommerce', 'title', 'links', 'filters', 'footer', 'tailwind' ) as $sheet ) {
+	foreach ( array( 'buttons', 'forms', 'woocommerce', 'title', 'links', 'filters', 'footer', 'notices', 'tailwind' ) as $sheet ) {
 		$css = '/assets/css/base/upperel-' . $sheet . '.css';
 		$ver = file_exists( $theme_dir . $css ) ? (string) filemtime( $theme_dir . $css ) : null;
 
@@ -74,3 +74,26 @@ function upperel_styles() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'upperel_styles', 25 );
+
+/**
+ * Floating WooCommerce notices (assets/js/notices.js, upperel-notices.scss).
+ */
+function upperel_notices_assets() {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+
+	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	$js     = '/assets/js/notices' . $suffix . '.js';
+	$path   = get_template_directory() . $js;
+
+	wp_enqueue_script(
+		'upperel-notices',
+		get_template_directory_uri() . $js,
+		array(),
+		file_exists( $path ) ? (string) filemtime( $path ) : null,
+		true
+	);
+	wp_localize_script( 'upperel-notices', 'upperelNotices', array( 'close' => __( 'Close notice', 'storefront' ) ) );
+}
+add_action( 'wp_enqueue_scripts', 'upperel_notices_assets', 20 );

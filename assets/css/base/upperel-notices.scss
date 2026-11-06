@@ -1,0 +1,100 @@
+/**
+ * Upperel notices (assets/js/notices.js): WooCommerce's notices float in a
+ * stack at the top centre of the screen, above everything, instead of
+ * pushing the page down. Storefront's notice colours and icons are kept.
+ *
+ * Loaded by inc/upperel-styles.php.
+ */
+
+@import "../sass/utils/variables";
+
+.upperel-notices {
+	position: fixed;
+	top: calc(var(--wp-admin--admin-bar--height, 0px) + 16px);
+	left: 50%;
+	z-index: 100000; // Above the header, the mobile bottom bar and the filter panel.
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: min(560px, calc(100vw - 32px));
+	transform: translateX(-50%);
+	pointer-events: none; // Only the notices themselves take clicks.
+}
+
+.upperel-notice {
+	position: relative;
+	border-radius: 4px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+	opacity: 0;
+	transform: translateY(-8px);
+	transition: opacity 0.25s ease, transform 0.25s ease;
+	pointer-events: auto;
+
+	&.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transform: none;
+		transition: opacity 0.25s ease;
+	}
+
+	// Storefront's notice boxes, without their page margins; room on the
+	// right for the close button.
+	.woocommerce-message,
+	.woocommerce-info,
+	.woocommerce-error {
+		margin: 0;
+		padding-right: 3rem;
+		border-radius: 4px;
+		outline: none; // WooCommerce focuses notices; the stack is announced via role="alert".
+	}
+
+	// "View cart" and similar links in a notice: a compact button on the
+	// right, not the full-width action button.
+	.button {
+		float: right;
+		display: inline-block;
+		width: auto;
+		margin: -0.25em 0 0 1em;
+		padding: 0.35em 0.9em;
+		box-shadow: none;
+		font-size: 0.875em;
+
+		&:hover {
+			box-shadow: none;
+			transform: none;
+		}
+	}
+}
+
+button.upperel-notice__close {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	box-shadow: none;
+	color: var(--upperel-notice-color, #333); // The notice's text colour (notices.js).
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		background: rgba(0, 0, 0, 0.06);
+		color: var(--upperel-notice-color, #333);
+	}
+
+	&:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 1px;
+	}
+}
