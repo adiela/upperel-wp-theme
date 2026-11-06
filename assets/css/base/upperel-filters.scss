@@ -1,0 +1,320 @@
+/**
+ * Upperel shop filters (inc/upperel-shop-filters.php): the "Filters"
+ * button in the sorting row, the active filter chips under it, and the
+ * filter panel that slides in from the right.
+ *
+ * Loaded by inc/upperel-styles.php, after Storefront's Customizer CSS.
+ * The buttons here are bare <button>s, which Storefront's Customizer
+ * colours like action buttons, so their rules use button.class selectors
+ * to win.
+ */
+
+@import "../sass/utils/variables";
+
+$upperel-filters-ink: #333; // Same as the header and form field focus.
+$upperel-filters-line: rgba(127, 127, 127, 0.4); // Same as form fields.
+$upperel-filters-radius: 4px;
+$upperel-filters-width: 400px;
+
+// "Filters" button.
+button.upperel-filters-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	margin: 0 1em 1em 0;
+	padding: 0.5em 1em;
+	border: 1px solid $upperel-filters-line;
+	border-radius: $upperel-filters-radius;
+	background: #fff;
+	color: $upperel-filters-ink;
+	font-size: 1em;
+	font-weight: 600;
+	line-height: 1.618;
+	box-shadow: none;
+
+	&:hover,
+	&:focus {
+		border-color: $upperel-filters-ink;
+		background: #fff;
+		color: $upperel-filters-ink;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $upperel-filters-ink;
+		outline-offset: 2px;
+	}
+}
+
+.upperel-filters-toggle__icon {
+	flex: none;
+}
+
+.upperel-filters-toggle__count {
+	min-width: 1.5em;
+	padding: 0 0.4em;
+	border-radius: 999px;
+	background: $upperel-filters-ink;
+	color: #fff;
+	font-size: 0.8em;
+	line-height: 1.5em;
+	text-align: center;
+}
+
+@media (min-width: $desktop) {
+
+	// The sorting row is a centred flex row on desktop (upperel-forms.scss).
+	button.upperel-filters-toggle {
+		margin-bottom: 0;
+	}
+}
+
+// Active filter chips, under the sorting row.
+.upperel-filters-active {
+	margin: -1.5em 0 2em; // Pull up into the sorting row's bottom margin.
+	font-size: 0.875em;
+}
+
+.upperel-filters-active__list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5em;
+	margin: 0;
+	list-style: none;
+}
+
+a.upperel-filters-active__chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	padding: 0.25em 0.75em;
+	border: 1px solid $upperel-filters-line;
+	border-radius: 999px;
+	color: $upperel-filters-ink;
+
+	&:hover,
+	&:focus {
+		border-color: $upperel-filters-ink;
+		color: $upperel-filters-ink;
+	}
+}
+
+.upperel-filters-active__remove {
+	font-size: 1.25em;
+	line-height: 1;
+}
+
+.upperel-filters-active__clear {
+	margin-left: 0.25em;
+	font-weight: 600;
+}
+
+// No results: the row with the button stands alone above the notice.
+.upperel-filters-empty-row {
+	margin-bottom: 2em;
+}
+
+// Filter panel.
+.upperel-filters {
+	position: fixed;
+	inset: 0 0 0 auto;
+	width: min(#{$upperel-filters-width}, 100vw - 3rem);
+	max-width: none;
+	height: 100%;
+	max-height: none;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: #fff;
+	color: $color_body;
+	box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
+
+	&[open] {
+		animation: upperel-filters-in 0.25s ease-out;
+	}
+
+	&::backdrop {
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+
+		&[open] {
+			animation: none;
+		}
+	}
+}
+
+@keyframes upperel-filters-in {
+
+	from {
+		transform: translateX(100%);
+	}
+
+	to {
+		transform: none;
+	}
+}
+
+// Fills the panel, so a click on the dialog itself is on the backdrop.
+.upperel-filters__form {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	margin: 0;
+}
+
+.upperel-filters__header,
+.upperel-filters__footer {
+	display: flex;
+	flex: none;
+	align-items: center;
+	gap: 1em;
+	padding: 1em 1.5em;
+}
+
+.upperel-filters__header {
+	justify-content: space-between;
+	border-bottom: 1px solid $upperel-filters-line;
+}
+
+.upperel-filters__title {
+	margin: 0;
+	font-size: 1.25em;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+button.upperel-filters__close {
+	display: inline-flex;
+	margin: -0.5em -0.5em -0.5em 0;
+	padding: 0.5em;
+	border: 0;
+	background: none;
+	color: $upperel-filters-ink;
+	box-shadow: none;
+
+	&:hover,
+	&:focus {
+		background: none;
+		color: $upperel-filters-ink;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $upperel-filters-ink;
+	}
+}
+
+.upperel-filters__body {
+	flex: 1;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 0 1.5em;
+}
+
+.upperel-filters__group {
+	border-bottom: 1px solid $upperel-filters-line;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+}
+
+.upperel-filters__group-title {
+	display: flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 1em 0;
+	color: $upperel-filters-ink;
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	// Chevron: down when closed, up when open.
+	&::after {
+		content: "";
+		width: 0.5em;
+		height: 0.5em;
+		margin: -0.25em 0.25em 0 auto;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: rotate(45deg);
+	}
+
+	.upperel-filters__group[open] > &::after {
+		margin-top: 0.25em;
+		transform: rotate(-135deg);
+	}
+}
+
+.upperel-filters__group-count {
+	font-weight: 400;
+}
+
+.upperel-filters__options {
+	margin: 0;
+	padding: 0 0 1em;
+	border: 0;
+	background: none; // Storefront gives fieldsets a grey background.
+}
+
+.upperel-filters__option {
+	display: flex;
+	align-items: center;
+	gap: 0.75em;
+	padding: 0.35em 0 0.35em calc(var(--upperel-filter-depth, 0) * 1.5em);
+	cursor: pointer;
+
+	input {
+		flex: none;
+		width: 1.125em;
+		height: 1.125em;
+		margin: 0;
+		accent-color: $upperel-filters-ink;
+	}
+}
+
+.upperel-filters__price {
+	display: flex;
+	align-items: flex-end;
+	gap: 0.75em;
+}
+
+.upperel-filters__price-field {
+	flex: 1;
+	min-width: 0;
+
+	span {
+		display: block;
+		margin-bottom: 0.25em;
+		font-size: 0.875em;
+	}
+
+	input {
+		width: 100%;
+	}
+}
+
+.upperel-filters__price-sep {
+	padding-bottom: 0.75em;
+}
+
+.upperel-filters__footer {
+	border-top: 1px solid $upperel-filters-line;
+}
+
+.upperel-filters__clear {
+	flex: none;
+	font-weight: 600;
+}
+
+// Upperel buttons are full width; share the row with "Clear all".
+.upperel-filters__footer .upperel-filters__apply {
+	flex: 1;
+	width: auto;
+	margin: 0;
+}
