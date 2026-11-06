@@ -325,9 +325,12 @@ $upperel-bleed: calc(50% - 50vw);
 		border-radius: 4px;
 		background-color: var(--upperel-header-bg, #fff);
 
+		// Focus: a 2px ring drawn inside the border, so it follows the
+		// rounded corners. Drawn outside, the panel's clip-path (the slide-in)
+		// cut it off at the edges, leaving square, notched corners.
 		&:focus-within {
 			border-color: var(--upperel-header-link, #333);
-			box-shadow: 0 0 0 1px var(--upperel-header-link, #333);
+			box-shadow: inset 0 0 0 1px var(--upperel-header-link, #333);
 		}
 	}
 
