@@ -30,13 +30,97 @@ function upperel_header_setup() {
 	remove_action( 'storefront_header', 'storefront_product_search', 40 );
 	remove_action( 'storefront_header', 'storefront_header_cart', 60 );
 
-	// Kept: storefront_skip_links (5), storefront_site_branding (20),
-	// storefront_primary_navigation (50).
+	// Menu: shown only when switched on in the Customizer and a menu is
+	// set up (see upperel_header_navigation()).
+	remove_action( 'storefront_header', 'storefront_primary_navigation', 50 );
+	add_action( 'storefront_header', 'upperel_header_navigation', 50 );
+
+	// Kept: storefront_skip_links (5), storefront_site_branding (20).
 	add_action( 'storefront_header', 'upperel_header_container', 0 );
 	add_action( 'storefront_header', 'upperel_header_actions', 60 );
 	add_action( 'storefront_header', 'upperel_header_container_close', 70 );
 }
 add_action( 'after_setup_theme', 'upperel_header_setup', 20 );
+
+/**
+ * The header menu, if it's switched on (Customize → Header → "Show the
+ * menu") and a menu is assigned to the Primary or Handheld location.
+ *
+ * Its links are edited in Appearance → Menus or Customize → Menus.
+ * Without an assigned menu nothing is shown, rather than WordPress's
+ * fallback list of every page, which can't be edited.
+ *
+ * Checked when the header is printed, not on after_setup_theme, so the
+ * Customizer preview reflects the checkbox.
+ */
+function upperel_header_navigation() {
+	if ( ! get_theme_mod( 'upperel_header_menu', true ) ) {
+		return;
+	}
+	if ( ! has_nav_menu( 'primary' ) && ! has_nav_menu( 'handheld' ) ) {
+		return;
+	}
+	storefront_primary_navigation();
+}
+
+/**
+ * Header menu locations: no fallback list of pages, and the Handheld
+ * (mobile) location shows the Primary menu when it has none of its own,
+ * so one menu covers both.
+ *
+ * @param array $args wp_nav_menu() arguments.
+ * @return array
+ */
+function upperel_header_menu_args( $args ) {
+	if ( ! in_array( $args['theme_location'], array( 'primary', 'handheld' ), true ) ) {
+		return $args;
+	}
+
+	$args['fallback_cb'] = false;
+
+	if ( 'handheld' === $args['theme_location'] && ! has_nav_menu( 'handheld' ) ) {
+		$locations = get_nav_menu_locations();
+		if ( ! empty( $locations['primary'] ) ) {
+			$args['menu'] = $locations['primary'];
+		}
+	}
+	if ( 'primary' === $args['theme_location'] && ! has_nav_menu( 'primary' ) ) {
+		$locations = get_nav_menu_locations();
+		if ( ! empty( $locations['handheld'] ) ) {
+			$args['menu'] = $locations['handheld'];
+		}
+	}
+
+	return $args;
+}
+add_filter( 'wp_nav_menu_args', 'upperel_header_menu_args' );
+
+/**
+ * Customize → Header: "Show the menu" checkbox.
+ *
+ * @param WP_Customize_Manager $wp_customize Customizer manager.
+ */
+function upperel_header_customize_register( $wp_customize ) {
+	$wp_customize->add_setting(
+		'upperel_header_menu',
+		array(
+			'default'           => true,
+			'sanitize_callback' => 'wp_validate_boolean',
+		)
+	);
+
+	$wp_customize->add_control(
+		'upperel_header_menu',
+		array(
+			'type'        => 'checkbox',
+			'label'       => __( 'Show the menu', 'storefront' ),
+			'description' => __( 'Edit its links in Menus (the Primary Menu location; the Handheld Menu location for mobile, if set, or the same menu).', 'storefront' ),
+			'section'     => 'header_image',
+			'priority'    => 5,
+		)
+	);
+}
+add_action( 'customize_register', 'upperel_header_customize_register', 20 );
 
 /**
  * Open the header row.

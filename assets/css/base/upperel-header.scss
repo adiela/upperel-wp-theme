@@ -149,6 +149,7 @@ $upperel-bleed: calc(50% - 50vw);
 			flex: 0 0 auto;
 			align-items: center;
 			gap: 6px;
+			margin-inline-start: auto; // Stay on the right when there's no menu.
 		}
 	}
 
