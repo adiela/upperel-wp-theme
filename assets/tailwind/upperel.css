@@ -1,0 +1,126 @@
+/**
+ * Upperel Tailwind CSS entry point.
+ *
+ * Built to assets/css/base/upperel-tailwind.css by `npm run build:tailwind`
+ * (run at the end of `npm run build:css`), loaded by inc/upperel-styles.php.
+ *
+ * Set up for a Storefront-based theme:
+ * - No Preflight (Tailwind's base reset): it would restyle the whole
+ *   existing theme. Only the theme variables and utilities are included.
+ * - Utilities are NOT in a cascade layer. Layered CSS always loses to
+ *   Storefront's unlayered CSS, whatever the specificity, so layered
+ *   utility classes would silently do nothing wherever Storefront styles
+ *   the same property. Unlayered, they compete by specificity as usual.
+ *   If a utility still loses to a more specific Storefront rule, use the
+ *   important modifier, e.g. `mt-4!`.
+ * - Classes used in the theme's PHP and JS files are picked up below.
+ */
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css";
+
+@source "../../**/*.php";
+@source "../js/**/*.js";
+@source "../../blocks/**/*.js";
+
+/* -------------------------------------------------------------------------
+ * Alerts, styled like Tailwind's classic alert component:
+ *   bg-{color}-100 border border-{color}-400 text-{color}-700 px-4 py-3 rounded
+ * Applied to WooCommerce's notices (success / info / error), the "no
+ * reviews" / "no comments" notices, and WooCommerce Blocks notice banners
+ * (cart and checkout blocks). Replaces Storefront's solid coloured boxes.
+ * ---------------------------------------------------------------------- */
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error,
+.woocommerce-noreviews,
+p.no-comments,
+body .wc-block-components-notice-banner {
+	@apply relative mb-6 ml-0 rounded border px-4 py-3 shadow-none;
+
+	list-style: none;
+	clear: both;
+
+	/* Storefront: Font Awesome icon on the left. */
+	&::before {
+		content: none;
+	}
+
+	/* Links: in the alert's own colour. */
+	& a {
+		@apply font-semibold underline;
+
+		color: inherit;
+
+		&:hover {
+			color: inherit;
+			opacity: 0.75;
+		}
+	}
+
+	/*
+	 * Buttons in notices (e.g. "View cart" after adding to cart): a bold
+	 * link on the right instead of the full-width site button.
+	 */
+	& .button,
+	& .button:hover {
+		@apply float-right ml-4 inline w-auto p-0 font-bold underline shadow-none;
+
+		border: 0;
+		border-radius: 0;
+		background: none;
+		color: inherit;
+		letter-spacing: normal;
+		text-transform: none;
+		transform: none;
+	}
+
+	& .button:hover {
+		opacity: 0.75;
+	}
+}
+
+/* Success: green. */
+.woocommerce-message,
+body .wc-block-components-notice-banner.is-success {
+	@apply border-green-400 bg-green-100 text-green-700;
+}
+
+/* Info: blue. */
+.woocommerce-info,
+.woocommerce-noreviews,
+p.no-comments,
+body .wc-block-components-notice-banner.is-info {
+	@apply border-blue-400 bg-blue-100 text-blue-700;
+}
+
+/* Error: red. Errors are a <ul>, one <li> per message. */
+.woocommerce-error,
+body .wc-block-components-notice-banner.is-error {
+	@apply border-red-400 bg-red-100 text-red-700;
+}
+
+/* Warning (Blocks only): yellow. */
+body .wc-block-components-notice-banner.is-warning {
+	@apply border-yellow-400 bg-yellow-100 text-yellow-700;
+}
+
+/* Storefront shows "No products were found" as plain text; make it an alert. */
+.woocommerce-info.woocommerce-no-products-found {
+	@apply border border-blue-400 bg-blue-100 px-4 py-3 text-blue-700;
+}
+
+/*
+ * Blocks banners: no icon, like the classic alert. WooCommerce sets their
+ * padding with !important, so the padding needs it too (the `!` suffix).
+ */
+body .wc-block-components-notice-banner {
+	@apply px-4! py-3!;
+
+	gap: 0;
+
+	& > svg {
+		display: none;
+	}
+}

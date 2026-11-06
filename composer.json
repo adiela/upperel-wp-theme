@@ -15,6 +15,7 @@
 			"!/style-rtl.css",
 			"/assets/css/sass",
 			"/assets/css/**/*.scss",
+			"/assets/tailwind",
 			"/vendor",
 			"composer.json",
 			"composer.lock",

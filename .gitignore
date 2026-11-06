@@ -1,5 +1,7 @@
 # Compiled CSS
 *.css
+# ...but the Tailwind source is hand-written, not compiled.
+!/assets/tailwind/*.css
 
 # Minified js
 *.min.js
