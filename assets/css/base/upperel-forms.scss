@@ -91,24 +91,96 @@ select:not([multiple]):not([size]) {
 	cursor: pointer;
 }
 
-// Shop sorting row (desktop): the taller sorting dropdown would leave the
-// result count and pagination top-aligned, so centre the row's items.
+// Shop sorting rows (above and below the grid): the Filters button
+// (upperel-filters.scss) and sorting dropdown on the right; the result
+// count, and pagination on desktop, on the left. A flex row with its items
+// centred, as the taller dropdown would leave the rest top-aligned.
 // Storefront floats them; flex ignores the floats.
+.storefront-sorting {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+
+	// Clearfix pseudo-elements would become flex items.
+	&::before,
+	&::after {
+		display: none;
+	}
+
+	// The notices wrapper sits in the top row; give notices their own line.
+	.woocommerce-notices-wrapper {
+		flex-basis: 100%;
+	}
+
+	// No bottom margins, so the two line up when centred.
+	.upperel-filters-toggle {
+		order: 3;
+		margin-bottom: 0;
+		margin-left: auto;
+	}
+
+	.woocommerce-ordering {
+		order: 4;
+		margin-bottom: 0;
+		margin-left: auto;
+	}
+
+	// With the Filters button before it, the button takes the free space.
+	.upperel-filters-toggle + .woocommerce-ordering {
+		margin-left: 0;
+	}
+
+	// Filters button and sorting dropdown the same height: the button's
+	// compact padding on both (less than other dropdowns). The button is
+	// as wide as its content; the dropdown fits the longest sort option,
+	// narrowing if the row is too tight.
+	.upperel-filters-toggle {
+		flex: none;
+		margin-right: 1rem;
+		padding: 0.5em 0.75rem;
+	}
+
+	.woocommerce-ordering {
+		flex: 0 1 12.25rem;
+		min-width: 0;
+	}
+
+	.woocommerce-ordering select {
+		width: 100%;
+		padding: 0.5em 2.25rem 0.5em 0.75rem;
+		background-position: right 0.75rem center;
+	}
+
+	// Mobile: the result count, then pagination, on their own lines under
+	// the button and dropdown.
+	.woocommerce-result-count {
+		flex-basis: 100%;
+		order: 5;
+		margin-top: 1em;
+	}
+
+	.woocommerce-pagination {
+		order: 6;
+	}
+}
+
 @media (min-width: $desktop) {
 
 	.storefront-sorting {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
 
-		// Clearfix pseudo-elements would become flex items.
-		&::before,
-		&::after {
-			display: none;
+		.woocommerce-result-count {
+			flex-basis: auto;
+			order: 1;
+			margin-top: 0;
 		}
 
 		.woocommerce-pagination {
-			margin-left: auto;
+			order: 2;
+			margin-left: 1em;
+		}
+
+		.woocommerce-ordering {
+			margin-right: 0; // Storefront spaces it from the result count.
 		}
 	}
 }
