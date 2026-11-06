@@ -96,6 +96,23 @@ function upperel_product_gallery_slider_options( $options ) {
 add_filter( 'woocommerce_single_product_carousel_options', 'upperel_product_gallery_slider_options' );
 
 /**
+ * Single product: "Shipping calculated at checkout." under the price.
+ *
+ * Only for products that are shipped (not virtual or downloadable-only
+ * ones), and only while shipping is enabled in WooCommerce. Priority 11:
+ * right after the price (10), before the short description (20).
+ */
+function upperel_product_shipping_note() {
+	global $product;
+
+	if ( ! $product || ! wc_shipping_enabled() || ! $product->needs_shipping() ) {
+		return;
+	}
+	echo '<p class="upperel-shipping-note">' . esc_html__( 'Shipping calculated at checkout.', 'storefront' ) . '</p>';
+}
+add_action( 'woocommerce_single_product_summary', 'upperel_product_shipping_note', 11 );
+
+/**
  * Single product: product information in the right-hand column, under the
  * add-to-cart form, as tabs: "Description" and "Attributes"
  * (WooCommerce's "Additional information": attributes, weight, dimensions).

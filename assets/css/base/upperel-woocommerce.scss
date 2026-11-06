@@ -44,6 +44,13 @@
 	}
 }
 
+// Single product: less space between the breadcrumb and the product:
+// ~31px on desktop, 24px on phones (the breadcrumb bar's bottom padding
+// plus this margin), instead of Storefront's ~82px / 42px.
+.single-product .storefront-breadcrumb {
+	margin-bottom: 0.5rem;
+}
+
 // Single product: smaller product name than Storefront's h1 (~42px):
 // 24px on phones, 28px from tablets up.
 .single-product div.product .product_title {
@@ -62,22 +69,31 @@
 	margin-top: 0.5rem;
 }
 
-// Single product: cap the main image's height so it fits in the first
-// screen without scrolling.
-// --upperel-gallery-offset (set by assets/js/single-product.js) is the
-// space above the image (admin bar, header, gap) plus anything the gallery
-// shows below it (nothing, with the thumbnails in a column on the left). Before the script runs it falls back to the full screen height.
-// The zoom overlay (.zoomImg) and thumbnails are not matched.
+// "Shipping calculated at checkout." (inc/upperel-woocommerce.php): small,
+// muted, right under the price; it takes over the price's space below.
+.single-product div.product .summary .upperel-shipping-note {
+	margin: 0 0 ms(2);
+	font-size: 0.75rem; // 12px.
+	opacity: 0.75;
+}
+
+.single-product div.product .summary p.price:has(+ .upperel-shipping-note) {
+	margin-bottom: 0.25rem;
+}
+
+// Single product: cap the main image's height at the screen height less
+// 100px, so it fits in the first screen. The zoom overlay (.zoomImg) and
+// thumbnails are not matched.
 .single-product div.product .woocommerce-product-gallery .woocommerce-product-gallery__image > a img {
 	width: auto;
 	max-width: 100%;
-	max-height: calc(100vh - var(--upperel-gallery-offset, 0px));
+	max-height: calc(100vh - 100px);
 	margin-right: auto;
 	margin-left: auto;
 
 	// Small viewport height: stays correct while mobile browser bars show.
 	@supports (height: 100svh) {
-		max-height: calc(100svh - var(--upperel-gallery-offset, 0px));
+		max-height: calc(100svh - 100px);
 	}
 }
 
@@ -396,8 +412,10 @@ $upperel-grid-gap: 16px; // Between cards, across and down; the cards' 12px padd
 @include susy-media($desktop) {
 
 	// Shop and product category/tag pages: narrower content, so the sorting
-	// row and pagination stay aligned with the grid.
-	body.woocommerce.archive #main {
+	// row and pagination stay aligned with the grid. Single product pages
+	// get the same width, so the product lines up with the grids.
+	body.woocommerce.archive #main,
+	body.single-product #main {
 		max-width: $upperel-grid-width;
 		margin-right: auto;
 		margin-left: auto;
