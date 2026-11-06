@@ -44,6 +44,24 @@
 	}
 }
 
+// Single product: smaller product name than Storefront's h1 (~42px):
+// 24px on phones, 28px from tablets up.
+.single-product div.product .product_title {
+	margin-bottom: 0.5rem;
+	font-size: 1.5rem;
+	line-height: 1.3;
+
+	@media (min-width: $desktop) {
+		font-size: 1.75rem;
+	}
+}
+
+// Price close under the name: 8px instead of Storefront's ~32px top
+// margin (the two margins collapse). The space below it is unchanged.
+.single-product div.product .summary p.price {
+	margin-top: 0.5rem;
+}
+
 // Single product: cap the main image's height so it and the gallery
 // thumbnails fit in the first screen without scrolling.
 // --upperel-gallery-offset (set by assets/js/single-product.js) is the
@@ -210,6 +228,20 @@ $upperel-gallery-control-border: rgba(127, 127, 127, 0.4); // As form fields.
 	}
 }
 
+// Single product: one size for the section titles under the product name:
+// the Description / Attributes tabs (or heading), the Reviews section
+// and the Related products and "You may also like" headings.
+// Storefront's were ~26px (ms(2)) and ~42px (ms(3)).
+.single-product {
+	--upperel-section-title-size: 1.25rem;
+
+	.related > h2:first-child,
+	.upsells > h2:first-child {
+		font-size: var(--upperel-section-title-size);
+		font-weight: 400; // Same as the Reviews title (Storefront headings: 300).
+	}
+}
+
 // Single product: collapsible sections (Reviews, Additional information),
 // replacing the tabs (inc/upperel-woocommerce.php). Closed until opened.
 $upperel-section-border: rgba(127, 127, 127, 0.25);
@@ -230,7 +262,7 @@ $upperel-section-border: rgba(127, 127, 127, 0.25);
 		gap: 1em;
 		padding: 1.25em 0;
 		color: $color_body;
-		font-size: ms(2);
+		font-size: var(--upperel-section-title-size);
 		font-weight: 400;
 		list-style: none;
 		cursor: pointer;
@@ -364,6 +396,7 @@ $upperel-qty-border: rgba(109, 109, 109, 0.3); // As the cart's selector.
 
 	&__heading {
 		margin-bottom: 0.75em;
+		font-size: var(--upperel-section-title-size);
 	}
 
 	&__tabs {
@@ -384,7 +417,7 @@ $upperel-qty-border: rgba(109, 109, 109, 0.3); // As the cart's selector.
 		background: transparent;
 		box-shadow: none;
 		color: $color_body;
-		font-size: ms(2);
+		font-size: var(--upperel-section-title-size);
 		font-weight: 300;
 		letter-spacing: normal;
 		text-transform: none;
@@ -462,6 +495,9 @@ $upperel-grid-gap: 16px; // Between cards, across and down; the cards' 12px padd
 // of the variation dropdowns. Outlined; the selected one is filled.
 // Options that don't match the other choices are faded and struck through.
 $upperel-swatch-color: #333;
+// Border: the buttons' colour (outlined buttons' border, solid buttons'
+// background), printed as --upperel-button-bg by inc/upperel-styles.php.
+$upperel-swatch-border: var(--upperel-button-bg, #96588a);
 
 .single-product div.product .variations {
 
@@ -480,7 +516,7 @@ $upperel-swatch-color: #333;
 		height: 40px;
 		margin: 0;
 		padding: 0 14px;
-		border: 1px solid rgba(127, 127, 127, 0.5);
+		border: 1px solid $upperel-swatch-border;
 		border-radius: 4px;
 		background: #fff;
 		box-shadow: none;
@@ -494,14 +530,14 @@ $upperel-swatch-color: #333;
 		transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 
 		&:hover:not(:disabled) {
-			border-color: $upperel-swatch-color;
+			border-color: $upperel-swatch-border;
 			background: #fff;
 			color: $upperel-swatch-color;
 		}
 
 		&[aria-pressed="true"],
 		&[aria-pressed="true"]:hover:not(:disabled) {
-			border-color: $upperel-swatch-color;
+			border-color: $upperel-swatch-border;
 			background: $upperel-swatch-color;
 			color: #fff;
 		}
