@@ -542,3 +542,37 @@ $upperel-account-form-width: 640px;
 		margin-top: ms(5);
 	}
 }
+
+// Product grid cards: lift with a soft shadow on hover (devices with a
+// real pointer, so it doesn't stick after a tap) and on keyboard focus.
+// Classic grids and WooCommerce block grids.
+.site-main ul.products li.product,
+.wc-block-grid__product,
+.wc-block-product-template .wc-block-product {
+	padding: 12px;
+	border-radius: 6px;
+	background-color: #fff;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:focus-within {
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+		transform: translateY(-4px);
+	}
+
+	@media (hover: hover) {
+
+		&:hover {
+			box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+			transform: translateY(-4px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: box-shadow 0.2s ease;
+
+		&:hover,
+		&:focus-within {
+			transform: none;
+		}
+	}
+}
