@@ -18,16 +18,35 @@ $upperel-footer-wide: 1024px; // Four columns.
 .site-footer {
 	padding-top: 3.5rem;
 	font-size: 0.9375rem;
+
+	// Desktop: little space under the copyright bar (Storefront's ~56px
+	// left an empty band). Phones keep Storefront's padding, which keeps
+	// the copyright clear of the fixed bottom bar.
+	@media (min-width: $desktop) {
+		padding-bottom: 0.5rem;
+	}
 }
 
 .upperel-footer {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	gap: 2.5rem;
+	// Phones: brand and contact full width, the two menu columns side by
+	// side between them.
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 2.5rem 1.5rem;
 	padding-bottom: 3rem;
 
+	> .upperel-footer__column--brand,
+	> .upperel-footer__column--contact {
+		grid-column: 1 / -1;
+	}
+
 	@media (min-width: $handheld) {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2.5rem;
+
+		> .upperel-footer__column--brand,
+		> .upperel-footer__column--contact {
+			grid-column: auto;
+		}
 	}
 
 	@media (min-width: $upperel-footer-wide) {

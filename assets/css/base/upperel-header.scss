@@ -396,3 +396,10 @@ $upperel-bleed: calc(50% - 50vw);
 .woocommerce-shop #masthead {
 	margin-bottom: 0;
 }
+
+// Search results without a breadcrumb (product search) would have their
+// title right against the header; give it room. Comes after the rule
+// above, which also matches product search (it counts as the shop page).
+.search:not(:has(.storefront-breadcrumb)) #masthead {
+	margin-bottom: 2rem;
+}

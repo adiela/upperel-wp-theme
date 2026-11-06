@@ -24,6 +24,34 @@ $upperel-title-tracking: 0.06em;
 	letter-spacing: $upperel-title-tracking;
 }
 
+// Space under the titles of shop, category/tag, cart, checkout and account
+// pages (desktop): 32px instead of Storefront's ~96px (ms(8)), which left
+// a large gap before the toolbar or content. Same selectors as
+// Storefront's woocommerce.scss, so these win by loading later.
+@include susy-media($desktop) {
+
+	.storefront-full-width-content {
+
+		&.woocommerce-cart .entry-header,
+		&.woocommerce-checkout .entry-header,
+		&.woocommerce-account .entry-header,
+		.woocommerce-products-header {
+			padding-bottom: 2rem;
+		}
+	}
+}
+
+// Phones: page and archive titles 32px instead of ~42px, which filled the
+// screen width with a single word.
+@media (max-width: #{$desktop - 1}) {
+
+	.entry-title,
+	.page-title,
+	.woocommerce-products-header__title {
+		font-size: 2rem;
+	}
+}
+
 // The banner replaces Storefront's space below the site header.
 .has-title-cover #masthead {
 	margin-bottom: 0;

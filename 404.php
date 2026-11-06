@@ -50,6 +50,7 @@ get_header(); ?>
 									'WC_Widget_Product_Categories',
 									array(
 										'count' => 1,
+										'title' => '', // The heading above is enough; the widget's own would repeat it.
 									)
 								);
 

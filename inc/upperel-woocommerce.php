@@ -9,13 +9,15 @@
  * Don't show the visible "Shop" title on the main shop page.
  *
  * Category and tag archives use the same template but keep their titles,
- * because is_shop() is only true on the main shop page.
+ * because is_shop() is only true on the main shop page. Product search
+ * results count as the shop page too, but keep their "Search results"
+ * title.
  *
  * @param bool $show Whether WooCommerce should print the page title.
  * @return bool
  */
 function upperel_hide_shop_page_title( $show ) {
-	return is_shop() ? false : $show;
+	return ( is_shop() && ! is_search() ) ? false : $show;
 }
 add_filter( 'woocommerce_show_page_title', 'upperel_hide_shop_page_title' );
 
