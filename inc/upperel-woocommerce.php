@@ -132,36 +132,103 @@ function upperel_product_gallery_slider_options( $options ) {
 add_filter( 'woocommerce_single_product_carousel_options', 'upperel_product_gallery_slider_options' );
 
 /**
- * Single product: show the description in the right-hand column, under the
- * add-to-cart form, instead of in the "Description" tab below.
+ * Single product: product information in the right-hand column, under the
+ * add-to-cart form, as tabs: "Description" and "Attributes"
+ * (WooCommerce's "Additional information": attributes, weight, dimensions).
+ * Replaces those two tabs in the sections below the product.
+ *
+ * With only one of the two available, it's shown under a plain heading
+ * instead of a single tab. The tabs follow the WAI-ARIA tabs pattern and
+ * are switched by assets/js/single-product.js.
  *
  * Priority 35 places it between the add-to-cart form (30) and the product
  * meta, e.g. the category line (40).
  */
-function upperel_product_summary_description() {
-	if ( '' === trim( get_the_content() ) ) {
+function upperel_product_summary_info() {
+	global $product;
+
+	$panels = array();
+
+	if ( '' !== trim( get_the_content() ) ) {
+		$panels['description'] = array(
+			'title'    => __( 'Description', 'storefront' ),
+			'callback' => 'the_content',
+		);
+	}
+
+	// Same condition WooCommerce uses for its "Additional information" tab.
+	if ( $product && ( $product->has_attributes() || apply_filters( 'wc_product_enable_dimensions_display', $product->has_weight() || $product->has_dimensions() ) ) ) {
+		$panels['attributes'] = array(
+			'title'    => __( 'Attributes', 'storefront' ),
+			'callback' => function () use ( $product ) {
+				wc_display_product_attributes( $product );
+			},
+		);
+	}
+
+	if ( empty( $panels ) ) {
 		return;
 	}
+
+	// One panel: plain heading, no tabs.
+	if ( 1 === count( $panels ) ) {
+		$key   = key( $panels );
+		$panel = current( $panels );
+		?>
+		<div class="upperel-product-info upperel-product-info--<?php echo esc_attr( $key ); ?>">
+			<h3 class="upperel-product-info__heading"><?php echo esc_html( $panel['title'] ); ?></h3>
+			<div class="upperel-product-info__panel"><?php call_user_func( $panel['callback'] ); ?></div>
+		</div>
+		<?php
+		return;
+	}
+
+	$first = true;
 	?>
-	<div class="woocommerce-product-details__description">
-		<h3 class="woocommerce-product-details__description-title"><?php esc_html_e( 'Product Description', 'storefront' ); ?></h3>
-		<?php the_content(); ?>
+	<div class="upperel-product-info upperel-product-info--tabs">
+		<div class="upperel-product-info__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Product information', 'storefront' ); ?>">
+			<?php foreach ( $panels as $key => $panel ) : ?>
+				<button
+					type="button"
+					role="tab"
+					class="upperel-product-info__tab"
+					id="upperel-product-info-tab-<?php echo esc_attr( $key ); ?>"
+					aria-controls="upperel-product-info-panel-<?php echo esc_attr( $key ); ?>"
+					aria-selected="<?php echo $first ? 'true' : 'false'; ?>"
+					tabindex="<?php echo $first ? '0' : '-1'; ?>"
+				><?php echo esc_html( $panel['title'] ); ?></button>
+				<?php $first = false; ?>
+			<?php endforeach; ?>
+		</div>
+		<?php $first = true; ?>
+		<?php foreach ( $panels as $key => $panel ) : ?>
+			<div
+				class="upperel-product-info__panel"
+				role="tabpanel"
+				id="upperel-product-info-panel-<?php echo esc_attr( $key ); ?>"
+				aria-labelledby="upperel-product-info-tab-<?php echo esc_attr( $key ); ?>"
+				tabindex="0"
+				<?php echo $first ? '' : 'hidden'; ?>
+			><?php call_user_func( $panel['callback'] ); ?></div>
+			<?php $first = false; ?>
+		<?php endforeach; ?>
 	</div>
 	<?php
 }
-add_action( 'woocommerce_single_product_summary', 'upperel_product_summary_description', 35 );
+add_action( 'woocommerce_single_product_summary', 'upperel_product_summary_info', 35 );
 
 /**
- * Remove the "Description" tab now the description is in the summary.
+ * Remove the "Description" and "Additional information" tabs from the
+ * sections below the product; both are in the summary now.
  *
  * @param array $tabs Product tabs.
  * @return array
  */
-function upperel_remove_description_tab( $tabs ) {
-	unset( $tabs['description'] );
+function upperel_remove_summary_tabs( $tabs ) {
+	unset( $tabs['description'], $tabs['additional_information'] );
 	return $tabs;
 }
-add_filter( 'woocommerce_product_tabs', 'upperel_remove_description_tab', 98 );
+add_filter( 'woocommerce_product_tabs', 'upperel_remove_summary_tabs', 98 );
 
 /**
  * Single product: show the product tabs (Reviews, Additional information)
@@ -233,3 +300,53 @@ function upperel_quantity_plus_button() {
 	}
 }
 add_action( 'woocommerce_after_quantity_input_field', 'upperel_quantity_plus_button' );
+
+/**
+ * Product grids: no "Add to cart" / "Select options" button. Each card
+ * links to the product page, where options and quantity are chosen.
+ *
+ * Covers every kind of product grid:
+ * - Classic grids (Shop, categories/tags, Related products, Storefront's
+ *   homepage sections, [products] shortcodes): unhook the loop button.
+ * - Product Collection and other blocks built from the "Add to Cart
+ *   Button" block: blank that block (upperel_remove_block_product_button).
+ * - Older grid blocks (Newest, Best Selling, On Sale, Hand-picked, Top
+ *   Rated, Products by Category/Tag/Attribute): strip the button from each
+ *   card (upperel_remove_grid_block_button).
+ * - The "All Products" block renders in the browser, so its button is
+ *   hidden with CSS instead (upperel-woocommerce.scss).
+ */
+function upperel_remove_loop_add_to_cart() {
+	remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+}
+add_action( 'init', 'upperel_remove_loop_add_to_cart' );
+
+/**
+ * Blank the "Add to Cart Button" block in product grids. It's kept where
+ * it's the add-to-cart for a single product: inside a Single Product block
+ * or an "Add to Cart with Options" block.
+ *
+ * @param string   $block_content Rendered block HTML.
+ * @param array    $block         Parsed block.
+ * @param WP_Block $instance      Block instance.
+ * @return string
+ */
+function upperel_remove_block_product_button( $block_content, $block, $instance = null ) {
+	$in_single_product = ! empty( $block['attrs']['isDescendentOfSingleProductBlock'] );
+	$in_add_to_cart    = $instance instanceof WP_Block && ! empty( $instance->context['woocommerce/isDescendantOfAddToCartWithOptions'] );
+
+	return ( $in_single_product || $in_add_to_cart ) ? $block_content : '';
+}
+add_filter( 'render_block_woocommerce/product-button', 'upperel_remove_block_product_button', 10, 3 );
+
+/**
+ * Strip the button from each card of the older product grid blocks.
+ *
+ * @param string $html Card HTML.
+ * @param object $data Card parts; $data->button is the button HTML.
+ * @return string
+ */
+function upperel_remove_grid_block_button( $html, $data ) {
+	return empty( $data->button ) ? $html : str_replace( $data->button, '', $html );
+}
+add_filter( 'woocommerce_blocks_product_grid_item_html', 'upperel_remove_grid_block_button', 10, 2 );

@@ -13,7 +13,10 @@
  * 2. Quantity − / + buttons (added in inc/upperel-woocommerce.php): step
  *    the field within its min/max/step and disable at the limits.
  *
- * 3. Collapsed sections (Reviews etc., inc/upperel-woocommerce.php): open
+ * 3. Description / Attributes tabs in the summary
+ *    (inc/upperel-woocommerce.php): switch panels on click and arrow keys.
+ *
+ * 4. Collapsed sections (Reviews etc., inc/upperel-woocommerce.php): open
  *    the right section when the page is opened at, or a link points to,
  *    #reviews or a review (#comment-…), e.g. the "customer reviews" link by
  *    the price, or the redirect after posting a review.
@@ -233,9 +236,60 @@
 		refresh();
 	}
 
+	// Tabs (WAI-ARIA tabs pattern): click, or arrow keys / Home / End when a
+	// tab has focus. Selecting a tab shows its panel and hides the others.
+	function initInfoTabs( container ) {
+		const tabs = Array.prototype.slice.call(
+			container.querySelectorAll( '[role="tab"]' )
+		);
+
+		function select( tab, focus ) {
+			tabs.forEach( function ( t ) {
+				const selected = t === tab;
+				t.setAttribute( 'aria-selected', selected ? 'true' : 'false' );
+				t.tabIndex = selected ? 0 : -1;
+				const panel = document.getElementById(
+					t.getAttribute( 'aria-controls' )
+				);
+				if ( panel ) {
+					panel.hidden = ! selected;
+				}
+			} );
+			if ( focus ) {
+				tab.focus();
+			}
+		}
+
+		tabs.forEach( function ( tab, i ) {
+			tab.addEventListener( 'click', function () {
+				select( tab, false );
+			} );
+			tab.addEventListener( 'keydown', function ( e ) {
+				let next = null;
+				if ( e.key === 'ArrowRight' ) {
+					next = tabs[ ( i + 1 ) % tabs.length ];
+				} else if ( e.key === 'ArrowLeft' ) {
+					next = tabs[ ( i - 1 + tabs.length ) % tabs.length ];
+				} else if ( e.key === 'Home' ) {
+					next = tabs[ 0 ];
+				} else if ( e.key === 'End' ) {
+					next = tabs[ tabs.length - 1 ];
+				}
+				if ( next ) {
+					e.preventDefault();
+					select( next, true );
+				}
+			} );
+		} );
+	}
+
 	document
 		.querySelectorAll( '.single-product .quantity' )
 		.forEach( initQuantity );
+
+	document
+		.querySelectorAll( '.upperel-product-info--tabs' )
+		.forEach( initInfoTabs );
 
 	const gallery = document.querySelector(
 		'.single-product div.product .woocommerce-product-gallery'

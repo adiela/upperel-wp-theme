@@ -355,3 +355,111 @@ $upperel-qty-border: rgba(109, 109, 109, 0.3); // As the cart's selector.
 		}
 	}
 }
+
+// Single product summary: "Description" / "Attributes"
+// tabs (inc/upperel-woocommerce.php), or a plain heading when only one
+// of them applies.
+.single-product .upperel-product-info {
+	margin-bottom: ms(3);
+
+	&__heading {
+		margin-bottom: 0.75em;
+	}
+
+	&__tabs {
+		display: flex;
+		flex-wrap: wrap;
+		column-gap: 1.75em;
+		margin-bottom: 1em;
+		border-bottom: 1px solid rgba(127, 127, 127, 0.25);
+	}
+
+	// Plain text tabs, not Storefront's grey buttons.
+	.upperel-product-info__tab {
+		margin: 0 0 -1px;
+		padding: 0.5em 0;
+		border: 0;
+		border-bottom: 2px solid transparent;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		color: $color_body;
+		font-size: ms(2);
+		font-weight: 300;
+		letter-spacing: normal;
+		text-transform: none;
+		cursor: pointer;
+		transition: color 0.2s ease, border-color 0.2s ease;
+
+		&:hover {
+			background: transparent;
+			color: darken($color_body, 25%);
+		}
+
+		&[aria-selected="true"] {
+			border-bottom-color: #333;
+			color: darken($color_body, 25%);
+		}
+
+		&:focus-visible {
+			outline: 2px solid #333;
+			outline-offset: 2px;
+		}
+	}
+
+	&__panel:focus-visible {
+		outline: 2px solid #333;
+		outline-offset: 4px;
+	}
+}
+
+// "All Products" block: it renders its cards in the browser, so the PHP
+// that removes grid buttons (inc/upperel-woocommerce.php) can't reach it.
+.wc-block-all-products .wc-block-components-product-button {
+	display: none;
+}
+
+// Product grids (classic: shop, categories/tags, Related products,
+// shortcodes), desktop only.
+$upperel-grid-width: 1200px; // Shop/category content; container is 1320px.
+$upperel-grid-gap: 32px; // Storefront's float grid: ~4.35% (57px at 1320).
+
+@include susy-media($desktop) {
+
+	// Shop and product category/tag pages: narrower content, so the sorting
+	// row and pagination stay aligned with the grid.
+	body.woocommerce.archive #main {
+		max-width: $upperel-grid-width;
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	// CSS Grid instead of Storefront's floated, percentage-width cards, so
+	// the gap is one fixed value. #main outranks Storefront's column rules.
+	#main ul.products {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		column-gap: $upperel-grid-gap;
+
+		// Clearfix pseudo-elements would become grid cells.
+		&::before,
+		&::after {
+			display: none;
+		}
+
+		@for $i from 1 through 6 {
+
+			&.columns-#{$i} {
+				grid-template-columns: repeat($i, minmax(0, 1fr));
+			}
+		}
+
+		li.product {
+			float: none;
+			clear: none;
+			width: auto;
+			margin-right: 0;
+			margin-left: 0;
+		}
+	}
+}
