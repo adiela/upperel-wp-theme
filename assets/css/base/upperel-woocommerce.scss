@@ -81,19 +81,18 @@
 	margin-bottom: 0.25rem;
 }
 
-// Single product: cap the main image's height at the screen height less
-// 100px, so it fits in the first screen. The zoom overlay (.zoomImg) and
+// Single product, desktop: cap the main image's height at the screen
+// height less 100px, so it fits in the first screen. On phones and tablets
+// it keeps its natural, full-width size. The zoom overlay (.zoomImg) and
 // thumbnails are not matched.
-.single-product div.product .woocommerce-product-gallery .woocommerce-product-gallery__image > a img {
-	width: auto;
-	max-width: 100%;
-	max-height: calc(100vh - 100px);
-	margin-right: auto;
-	margin-left: auto;
+@media (min-width: $desktop) {
 
-	// Small viewport height: stays correct while mobile browser bars show.
-	@supports (height: 100svh) {
-		max-height: calc(100svh - 100px);
+	.single-product div.product .woocommerce-product-gallery .woocommerce-product-gallery__image > a img {
+		width: auto;
+		max-width: 100%;
+		max-height: calc(100vh - 100px);
+		margin-right: auto;
+		margin-left: auto;
 	}
 }
 
