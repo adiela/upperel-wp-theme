@@ -4,8 +4,12 @@
 // tweaking the coloring or the sizing, can be done in one place,
 // not all over the stylesheet.
 
-$base-font:         "Source Sans Pro", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-$header-font:       $base-font;
+// Upperel: Soleil for text, Poppins for headings (loaded by
+// inc/upperel-styles.php). Soleil comes from Adobe Fonts once its project
+// ID is set in the Customizer; until then text falls back to Poppins
+// (Google Fonts). Storefront used Source Sans Pro for both.
+$base-font:         "soleil", "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$header-font:       "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $ms-base:           1em, 0.875em;
 $ms-ratio:          1.618;
 
