@@ -102,7 +102,7 @@ function upperel_single_product_assets() {
 	wp_enqueue_script(
 		'upperel-single-product',
 		get_template_directory_uri() . $js,
-		array(),
+		array( 'jquery' ), // Variation buttons drive WooCommerce's jQuery variation form.
 		file_exists( $path ) ? (string) filemtime( $path ) : null,
 		true
 	);

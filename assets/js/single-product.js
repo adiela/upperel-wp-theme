@@ -13,6 +13,8 @@
  * 2. Quantity − / + buttons (added in inc/upperel-woocommerce.php): step
  *    the field within its min/max/step and disable at the limits.
  *
+ * 2b. Variation buttons in place of the variation dropdowns.
+ *
  * 3. Description / Attributes tabs in the summary
  *    (inc/upperel-woocommerce.php): switch panels on click and arrow keys.
  *
@@ -283,9 +285,106 @@
 		} );
 	}
 
+	// Variation buttons: one outlined button per option, the selected one
+	// filled, in place of each variation dropdown. The (hidden) dropdowns
+	// stay the source of truth, so WooCommerce's variation script, the form
+	// submission and the "Clear" link work unchanged. Without JavaScript the
+	// dropdowns simply stay visible.
+	function initSwatches( form ) {
+		const $ = window.jQuery;
+		if ( ! $ ) {
+			return;
+		}
+
+		form.querySelectorAll( 'table.variations select' ).forEach( function (
+			select
+		) {
+			const options = Array.prototype.slice
+				.call( select.options )
+				.filter( function ( o ) {
+					return o.value !== '';
+				} )
+				.map( function ( o ) {
+					return { value: o.value, label: o.textContent.trim() };
+				} );
+			if ( ! options.length ) {
+				return;
+			}
+
+			const group = document.createElement( 'div' );
+			group.className = 'upperel-swatches';
+			group.setAttribute( 'role', 'group' );
+			const label = select.id
+				? form.querySelector(
+						'label[for="' + window.CSS.escape( select.id ) + '"]'
+				  )
+				: null;
+			if ( label ) {
+				label.id = label.id || select.id + '-label';
+				group.setAttribute( 'aria-labelledby', label.id );
+			}
+
+			// Mark which option is chosen and which are still available
+			// (WooCommerce removes or disables the ones that don't match
+			// the other choices).
+			function sync() {
+				group
+					.querySelectorAll( '.upperel-swatch' )
+					.forEach( function ( button ) {
+						const option = Array.prototype.find.call(
+							select.options,
+							function ( o ) {
+								return o.value === button.dataset.value;
+							}
+						);
+						button.disabled = ! option || option.disabled;
+						button.setAttribute(
+							'aria-pressed',
+							select.value === button.dataset.value
+								? 'true'
+								: 'false'
+						);
+					} );
+			}
+
+			options.forEach( function ( option ) {
+				const button = document.createElement( 'button' );
+				button.type = 'button';
+				button.className = 'upperel-swatch';
+				button.textContent = option.label;
+				button.dataset.value = option.value;
+				button.addEventListener( 'click', function () {
+					// Clicking the selected option again deselects it.
+					const next =
+						select.value === option.value ? '' : option.value;
+					$( select ).val( next ).trigger( 'change' );
+					sync();
+				} );
+				group.appendChild( button );
+			} );
+
+			select.insertAdjacentElement( 'afterend', group );
+			select.hidden = true;
+			select.classList.add( 'upperel-swatches__select' );
+
+			$( select ).on( 'change', sync );
+			$( form ).on(
+				'woocommerce_update_variation_values reset_data found_variation check_variations',
+				function () {
+					window.setTimeout( sync, 0 );
+				}
+			);
+			sync();
+		} );
+	}
+
 	document
 		.querySelectorAll( '.single-product .quantity' )
 		.forEach( initQuantity );
+
+	document
+		.querySelectorAll( '.single-product form.variations_form' )
+		.forEach( initSwatches );
 
 	document
 		.querySelectorAll( '.upperel-product-info--tabs' )

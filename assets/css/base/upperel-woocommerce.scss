@@ -463,3 +463,64 @@ $upperel-grid-gap: 32px; // Storefront's float grid: ~4.35% (57px at 1320).
 		}
 	}
 }
+
+// Single product: variation buttons (assets/js/single-product.js) in place
+// of the variation dropdowns. Outlined; the selected one is filled.
+// Options that don't match the other choices are faded and struck through.
+$upperel-swatch-color: #333;
+
+.single-product div.product .variations {
+
+	.upperel-swatches__select[hidden] {
+		display: none !important; // Beat any display set on selects.
+	}
+
+	.upperel-swatches {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.upperel-swatch {
+		min-width: 44px;
+		height: 40px;
+		margin: 0;
+		padding: 0 14px;
+		border: 1px solid rgba(127, 127, 127, 0.5);
+		border-radius: 4px;
+		background: #fff;
+		box-shadow: none;
+		color: $upperel-swatch-color;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1;
+		letter-spacing: normal;
+		text-transform: none;
+		cursor: pointer;
+		transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+		&:hover:not(:disabled) {
+			border-color: $upperel-swatch-color;
+			background: #fff;
+			color: $upperel-swatch-color;
+		}
+
+		&[aria-pressed="true"],
+		&[aria-pressed="true"]:hover:not(:disabled) {
+			border-color: $upperel-swatch-color;
+			background: $upperel-swatch-color;
+			color: #fff;
+		}
+
+		&:disabled {
+			opacity: 0.35;
+			text-decoration: line-through;
+			cursor: not-allowed;
+		}
+
+		&:focus-visible {
+			outline: 2px solid $upperel-swatch-color;
+			outline-offset: 2px;
+		}
+	}
+}
