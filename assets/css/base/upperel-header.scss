@@ -157,6 +157,7 @@ $upperel-bleed: calc(50% - 50vw);
 		// opened mobile menu; not the Menu button).
 		.primary-navigation a,
 		.handheld-navigation a {
+			font-size: 0.90625rem; // 14.5px (was 16px).
 			text-transform: uppercase;
 			letter-spacing: 0.06em;
 			transition: color 0.2s ease;
