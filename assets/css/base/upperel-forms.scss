@@ -145,10 +145,17 @@ select:not([multiple]):not([size]) {
 		min-width: 0;
 	}
 
+	// Border in the Filters button's colour, the solid buttons' background
+	// (--upperel-button-bg, printed inline by inc/upperel-styles.php).
 	.woocommerce-ordering select {
 		width: 100%;
 		padding: 0.5em 2.25rem 0.5em 0.75rem;
+		border-color: var(--upperel-button-bg, #96588a);
 		background-position: right 0.75rem center;
+
+		&:focus {
+			border-color: var(--upperel-button-bg, #96588a);
+		}
 	}
 
 	// Mobile: the result count, then pagination, on their own lines under
