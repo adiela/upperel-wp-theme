@@ -474,6 +474,50 @@ $upperel-grid-gap: 16px; // Between cards, across and down; the cards' 12px padd
 	}
 }
 
+// Product grids on phones and small tablets (under $desktop): two products
+// per row instead of Storefront's one, with the card contents scaled down
+// to fit the ~160px cards (less padding; smaller title, price and button
+// text) so "Select options" stays on one line.
+$upperel-grid-gap-mobile: 12px;
+
+@media (max-width: #{$desktop - 1}) {
+
+	#main ul.products {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: $upperel-grid-gap-mobile;
+
+		// Clearfix pseudo-elements would become grid cells.
+		&::before,
+		&::after {
+			display: none;
+		}
+
+		li.product {
+			float: none;
+			clear: none;
+			width: auto;
+			margin-right: 0;
+			margin-left: 0;
+			padding: 6px;
+		}
+
+		.woocommerce-loop-product__title {
+			font-size: 0.875rem;
+		}
+
+		.price {
+			font-size: 0.8125rem;
+		}
+
+		.button {
+			padding: 0.65em 0.5em;
+			font-size: 0.75rem;
+			letter-spacing: 0.04em;
+		}
+	}
+}
+
 // Single product: variation buttons (assets/js/single-product.js) in place
 // of the variation dropdowns. Outlined; the selected one is filled.
 // Options that don't match the other choices are faded and struck through.
