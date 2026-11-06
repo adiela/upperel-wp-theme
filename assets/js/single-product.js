@@ -1,10 +1,10 @@
 /**
  * Single product page.
  *
- * 1. Gallery: fit the main image in the first screen, and label the slider's
- *    dots. Measures the space above the main image (admin bar, header and
- *    the gap below it) plus the space the gallery takes below it (the
- *    slider's row of arrows and dots), and stores the total in
+ * 1. Gallery: fit the main image in the first screen, and make the
+ *    thumbnail column usable from the keyboard. Measures the space above
+ *    the main image (admin bar, header and the gap below it) plus any space
+ *    the gallery takes below it, and stores the total in
  *    --upperel-gallery-offset on the gallery. CSS
  *    (assets/css/base/upperel-woocommerce.scss) then sets
  *      max-height: calc(100svh - var(--upperel-gallery-offset))
@@ -29,16 +29,35 @@
 	function initGallery( gallery ) {
 		let frame = null;
 
-		// The slider's dots are links whose text is just "1", "2"…; give them
-		// clearer names for screen readers.
-		function labelDots() {
-			const dots = gallery.querySelectorAll( '.flex-control-paging a' );
-			dots.forEach( function ( dot, i ) {
-				if ( ! dot.hasAttribute( 'aria-label' ) ) {
-					dot.setAttribute(
-						'aria-label',
-						'Show image ' + ( i + 1 ) + ' of ' + dots.length
-					);
+		// The slider's thumbnails are bare images with click handlers. Make
+		// them buttons: focusable, named "Show image N of M", marked when
+		// showing (aria-current), and pressed with Enter or Space.
+		function setUpThumbs() {
+			const thumbs = gallery.querySelectorAll( '.flex-control-thumbs img' );
+			thumbs.forEach( function ( thumb, i ) {
+				if ( thumb.dataset.upperelThumb ) {
+					return;
+				}
+				thumb.dataset.upperelThumb = '1';
+				thumb.setAttribute( 'role', 'button' );
+				thumb.setAttribute( 'tabindex', '0' );
+				thumb.setAttribute( 'alt', '' );
+				thumb.setAttribute(
+					'aria-label',
+					'Show image ' + ( i + 1 ) + ' of ' + thumbs.length
+				);
+				thumb.addEventListener( 'keydown', function ( e ) {
+					if ( e.key === 'Enter' || e.key === ' ' ) {
+						e.preventDefault();
+						thumb.click();
+					}
+				} );
+			} );
+			thumbs.forEach( function ( thumb ) {
+				if ( thumb.classList.contains( 'flex-active' ) ) {
+					thumb.setAttribute( 'aria-current', 'true' );
+				} else {
+					thumb.removeAttribute( 'aria-current' );
 				}
 			} );
 		}
@@ -59,8 +78,8 @@
 			// Distance from the top of the page to the top of the main image.
 			const above = slide.getBoundingClientRect().top + window.scrollY;
 
-			// Space the gallery takes below the image: the slider's control row
-			// (arrows and dots), or a thumbnail strip if one is shown. Measured
+			// Space the gallery takes below the image, if any (the thumbnails
+			// are in a column on the left, so normally none). Measured
 			// from the bottom of the image area, which the controls follow, so
 			// it stays constant while the slider animates its height between
 			// differently shaped images.
@@ -94,7 +113,7 @@
 				Math.ceil( above + below ) + 'px'
 			);
 
-			labelDots();
+			setUpThumbs();
 		}
 
 		function schedule() {
@@ -107,8 +126,8 @@
 		window.addEventListener( 'load', schedule );
 		window.addEventListener( 'resize', schedule );
 
-		// WooCommerce's slider script builds the dots and arrows after load,
-		// and images arriving can shift things; re-measure when sizes change.
+		// WooCommerce's slider script builds the thumbnails after load, and
+		// images arriving can shift things; re-measure when sizes change.
 		if ( 'ResizeObserver' in window ) {
 			const observer = new window.ResizeObserver( schedule );
 			observer.observe( gallery );
@@ -117,6 +136,15 @@
 				observer.observe( header );
 			}
 		}
+
+		// The slider adds the thumbnails, and moves .flex-active between
+		// them as the image changes.
+		new MutationObserver( schedule ).observe( gallery, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: [ 'class' ],
+		} );
 	}
 
 	function initSections( container ) {

@@ -78,23 +78,19 @@ function upperel_single_product_assets() {
 add_action( 'wp_enqueue_scripts', 'upperel_single_product_assets', 20 );
 
 /**
- * Single product gallery: dots and arrows instead of thumbnails.
- *
- * WooCommerce's gallery slider (FlexSlider) shows a thumbnail strip below
- * the main image by default. Swap it for dots and prev/next arrows, styled
- * in upperel-woocommerce.scss. Autoplay stays off. animationLoop stays
- * off too: WooCommerce notes looping breaks the lightbox paging, so the
- * arrow at either end is disabled.
+ * Single product gallery: a column of thumbnails to the left of the main
+ * image (styled in upperel-woocommerce.scss; made keyboard-usable in
+ * assets/js/single-product.js), no arrows. Autoplay stays off.
+ * animationLoop stays off too: WooCommerce notes looping breaks the
+ * lightbox paging.
  *
  * @param array $options FlexSlider options.
  * @return array
  */
 function upperel_product_gallery_slider_options( $options ) {
-	$options['controlNav']   = true;
-	$options['directionNav'] = true;
+	$options['controlNav']   = 'thumbnails';
+	$options['directionNav'] = false;
 	$options['slideshow']    = false;
-	$options['prevText']     = __( 'Previous image', 'storefront' );
-	$options['nextText']     = __( 'Next image', 'storefront' );
 	return $options;
 }
 add_filter( 'woocommerce_single_product_carousel_options', 'upperel_product_gallery_slider_options' );

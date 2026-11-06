@@ -62,11 +62,11 @@
 	margin-top: 0.5rem;
 }
 
-// Single product: cap the main image's height so it and the gallery
-// thumbnails fit in the first screen without scrolling.
+// Single product: cap the main image's height so it fits in the first
+// screen without scrolling.
 // --upperel-gallery-offset (set by assets/js/single-product.js) is the
-// space above the image (admin bar, header, gap) plus the thumbnail strip
-// below it. Before the script runs it falls back to the full screen height.
+// space above the image (admin bar, header, gap) plus anything the gallery
+// shows below it (nothing, with the thumbnails in a column on the left). Before the script runs it falls back to the full screen height.
 // The zoom overlay (.zoomImg) and thumbnails are not matched.
 .single-product div.product .woocommerce-product-gallery .woocommerce-product-gallery__image > a img {
 	width: auto;
@@ -81,149 +81,91 @@
 	}
 }
 
-// Single product gallery slider: dots and arrows (enabled in
-// inc/upperel-woocommerce.php), in one row centred below the image:
-// [prev] [dots] [next]. The gallery becomes a wrapping flex container; the
-// image area takes the full first line and the arrows' list is flattened
-// (display: contents) so the dots can sit between them.
+// Single product gallery: a column of thumbnails to the left of the main
+// image (slider options in inc/upperel-woocommerce.php). With only one
+// image there are no thumbnails and the image keeps the full width.
+// The column is as tall as the main image (height 0 + min-height 100%, so
+// the thumbnails don't stretch the row) and scrolls if they don't fit.
+$upperel-gallery-thumb-width: 72px;
+$upperel-gallery-thumb-width-mobile: 56px;
 $upperel-gallery-control-color: #333;
-$upperel-gallery-control-border: rgba(127, 127, 127, 0.4); // As form fields.
 
-.single-product div.product .woocommerce-product-gallery {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	column-gap: 16px;
+.single-product div.product .woocommerce-product-gallery:has(> .flex-control-thumbs) {
+	display: grid;
+	grid-template-columns: $upperel-gallery-thumb-width-mobile minmax(0, 1fr);
+	column-gap: 12px;
+	align-items: start;
 
-	> .flex-viewport,
-	> .woocommerce-product-gallery__wrapper {
-		flex: 0 0 100%;
+	@media (min-width: $desktop) {
+		grid-template-columns: $upperel-gallery-thumb-width minmax(0, 1fr);
+		column-gap: 16px;
 	}
 
-	// Storefront spaces the viewport from the (removed) thumbnail strip;
-	// the control row's own top margin sets the gap instead.
 	> .flex-viewport {
-		margin-bottom: 0;
+		grid-row: 1;
+		grid-column: 2;
+		margin-bottom: 0; // Storefront spaces it from a thumbnail strip below.
 	}
 
-	// Dots.
-	.flex-control-paging {
-		order: 2;
-		display: flex;
-		gap: 10px;
-		margin: 16px 0 0;
-		padding: 0;
-		list-style: none;
+	// Main image against the thumbnails rather than centred in its column
+	// (a portrait image capped to the screen height is narrower than it).
+	.woocommerce-product-gallery__image > a img {
+		margin-left: 0;
+	}
 
-		li {
-			margin: 0;
-			padding: 0;
-			list-style: none;
+	> .flex-control-thumbs {
+		grid-row: 1;
+		grid-column: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		align-self: stretch;
+		height: 0;
+		min-height: 100%;
+		margin: 0;
+		padding: 0 2px; // Room for the focus outline.
+		overflow-y: auto;
+		scrollbar-width: thin;
+
+		// Storefront's clearfix pseudo-elements would become column items.
+		&::before,
+		&::after {
+			display: none;
 		}
 
-		a {
-			display: block;
-			width: 10px;
-			height: 10px;
-			overflow: hidden;
-			border-radius: 50%;
-			background: rgba(0, 0, 0, 0.2);
-			font-size: 0;
-			line-height: 0;
-			text-indent: -9999px;
-			cursor: pointer;
-			transition: background-color 0.2s ease, transform 0.2s ease;
+		// Storefront floats the thumbnails in rows by column count.
+		li {
+			float: none;
+			flex: none;
+			width: 100% !important;
+			margin: 0 !important;
+			padding-top: 2px;
+		}
 
-			&:hover {
-				background: rgba(0, 0, 0, 0.45);
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			border: 1px solid transparent;
+			border-radius: 4px;
+			opacity: 0.55;
+			cursor: pointer;
+			transition: opacity 0.2s ease, border-color 0.2s ease;
+
+			&:hover,
+			&.flex-active {
+				opacity: 1;
 			}
 
 			&.flex-active {
-				background: $upperel-gallery-control-color;
-				transform: scale(1.2);
-			}
-
-			&:focus-visible {
-				outline: 2px solid $upperel-gallery-control-color;
-				outline-offset: 3px;
-			}
-		}
-	}
-
-	// Arrows: the list is flattened so its two items join the row.
-	.flex-direction-nav {
-		display: contents;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		li {
-			margin: 16px 0 0;
-			padding: 0;
-			list-style: none;
-		}
-
-		.flex-nav-prev {
-			order: 1;
-		}
-
-		.flex-nav-next {
-			order: 3;
-		}
-
-		a {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 40px;
-			height: 40px;
-			overflow: hidden;
-			border: 1px solid $upperel-gallery-control-border;
-			border-radius: 50%;
-			background: transparent;
-			color: $upperel-gallery-control-color;
-			font-size: 0;
-			text-decoration: none;
-			transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-
-			// Chevron drawn with two borders, so it needs no icon font.
-			&::before {
-				content: "";
-				width: 9px;
-				height: 9px;
-				border-top: 2px solid currentcolor;
-				border-left: 2px solid currentcolor;
-			}
-
-			&:hover,
-			&:focus-visible {
 				border-color: $upperel-gallery-control-color;
-				background: rgba(127, 127, 127, 0.1);
-				color: $upperel-gallery-control-color;
 			}
 
 			&:focus-visible {
 				outline: 2px solid $upperel-gallery-control-color;
-				outline-offset: 2px;
+				outline-offset: 1px;
+				opacity: 1;
 			}
-
-			// First/last image: nowhere to go (the slider doesn't loop).
-			// Faded rather than hidden so the row doesn't shift.
-			&.flex-disabled {
-				opacity: 0.3;
-				pointer-events: none;
-			}
-		}
-
-		.flex-prev::before {
-			margin-left: 4px;
-			transform: rotate(-45deg);
-		}
-
-		.flex-next::before {
-			margin-right: 4px;
-			transform: rotate(135deg);
 		}
 	}
 }
