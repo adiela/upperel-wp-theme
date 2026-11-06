@@ -350,3 +350,15 @@ function upperel_remove_grid_block_button( $html, $data ) {
 	return empty( $data->button ) ? $html : str_replace( $data->button, '', $html );
 }
 add_filter( 'woocommerce_blocks_product_grid_item_html', 'upperel_remove_grid_block_button', 10, 2 );
+
+/**
+ * Single product: remove Storefront's previous/next product links (the
+ * product thumbnails pinned to the left and right screen edges).
+ *
+ * Unhooked rather than relying on the Customizer's "Product pagination"
+ * switch, so it stays off.
+ */
+function upperel_remove_product_pagination() {
+	remove_action( 'woocommerce_after_single_product_summary', 'storefront_single_product_pagination', 30 );
+}
+add_action( 'after_setup_theme', 'upperel_remove_product_pagination', 20 );
