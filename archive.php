@@ -16,8 +16,11 @@ get_header(); ?>
 
 			<header class="page-header">
 				<?php
+				// With a title cover image the title is in the banner (inc/upperel-title-cover.php).
+				if ( ! upperel_get_title_cover_id() ) {
 					the_archive_title( '<h1 class="page-title">', '</h1>' );
-					the_archive_description( '<div class="taxonomy-description">', '</div>' );
+				}
+				the_archive_description( '<div class="taxonomy-description">', '</div>' );
 				?>
 			</header><!-- .page-header -->
 

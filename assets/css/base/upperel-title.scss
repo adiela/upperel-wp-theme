@@ -1,0 +1,82 @@
+/**
+ * Upperel page and archive titles (inc/upperel-title-cover.php).
+ *
+ * - Titles of pages and of product/blog category and tag pages are
+ *   uppercase.
+ * - With a title cover image, the title sits in a full-width banner under
+ *   the site header: the image as a background, a dark overlay, and a
+ *   white title.
+ */
+
+@import "bourbon";
+@import "../sass/utils/variables";
+@import "../sass/utils/mixins";
+@import "susy";
+@import "../sass/vendors/modular-scale";
+
+$upperel-title-tracking: 0.06em;
+
+// Titles without a cover.
+.page .entry-header .entry-title,
+.woocommerce-products-header__title,
+.archive .page-header .page-title {
+	text-transform: uppercase;
+	letter-spacing: $upperel-title-tracking;
+}
+
+// The banner replaces Storefront's space below the site header.
+.has-title-cover #masthead {
+	margin-bottom: 0;
+}
+
+.upperel-title-cover {
+	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: 260px;
+	margin-bottom: ms(7);
+	overflow: hidden;
+	background-color: #111;
+
+	@include susy-media($desktop) {
+		min-height: 360px;
+	}
+
+	// Darken the image so the white title stays readable on any photo.
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	& &__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		max-width: none;
+		height: 100%;
+		margin: 0;
+		border-radius: 0;
+		object-fit: cover;
+	}
+
+	&__inner {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		padding-top: ms(4);
+		padding-bottom: ms(4);
+		text-align: center;
+	}
+
+	&__title {
+		margin: 0;
+		color: #fff;
+		font-weight: 300;
+		text-transform: uppercase;
+		letter-spacing: $upperel-title-tracking;
+		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+		overflow-wrap: anywhere;
+	}
+}
