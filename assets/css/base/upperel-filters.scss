@@ -32,7 +32,7 @@ button.upperel-filters-toggle {
 	background: #fff;
 	color: $upperel-filters-button;
 	font-size: 1em;
-	font-weight: 600;
+	font-weight: var(--upperel-button-font-weight); // Set in upperel-buttons.scss.
 	line-height: 1.618;
 	box-shadow: none;
 

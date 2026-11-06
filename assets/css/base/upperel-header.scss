@@ -152,11 +152,20 @@ $upperel-bleed: calc(50% - 50vw);
 				margin-left: 0;
 			}
 		}
+
+		// Menu links uppercase, slightly spaced (desktop menu and the
+		// opened mobile menu; not the Menu button).
+		.primary-navigation a,
+		.handheld-navigation a {
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
 	}
 
 	.menu-toggle {
 		float: none;
 		margin: 0;
+		font-weight: var(--upperel-button-font-weight); // Set in upperel-buttons.scss.
 	}
 
 	// Mobile: drop the opened menu below the header row, full width.
