@@ -81,11 +81,11 @@
 	margin-bottom: 0.25rem;
 }
 
-// Single product, desktop: cap the main image's height at the screen
-// height less 100px, so it fits in the first screen. On phones and tablets
-// it keeps its natural, full-width size. The zoom overlay (.zoomImg) and
-// thumbnails are not matched.
-@media (min-width: $desktop) {
+// Single product, tablet and desktop ($handheld, 568px, and up): cap the
+// main image's height at the screen height less 100px, so it fits in the
+// first screen. On phones it keeps its natural, full-width size. The zoom
+// overlay (.zoomImg) and thumbnails are not matched.
+@media (min-width: $handheld) {
 
 	.single-product div.product .woocommerce-product-gallery .woocommerce-product-gallery__image > a img {
 		width: auto;
@@ -96,53 +96,34 @@
 	}
 }
 
-// Single product gallery: a column of thumbnails to the left of the main
-// image (slider options in inc/upperel-woocommerce.php). With only one
-// image there are no thumbnails and the image keeps the full width.
-// The column is as tall as the main image (height 0 + min-height 100%, so
-// the thumbnails don't stretch the row) and scrolls if they don't fit.
+// Single product gallery thumbnails (slider options in
+// inc/upperel-woocommerce.php). With only one image there are none and the
+// image keeps the full width.
+// - Phones: a row under the main image, scrolling sideways if they don't
+//   fit.
+// - Tablet and desktop ($handheld, 568px, and up): a column to the left of
+//   the main image, as tall as it (height 0 + min-height 100%, so the
+//   thumbnails don't stretch the row), scrolling if they don't fit.
 $upperel-gallery-thumb-width: 72px;
-$upperel-gallery-thumb-width-mobile: 56px;
+$upperel-gallery-thumb-width-tablet: 56px;
+$upperel-gallery-thumb-width-mobile: 64px;
 $upperel-gallery-control-color: #333;
 
 .single-product div.product .woocommerce-product-gallery:has(> .flex-control-thumbs) {
-	display: grid;
-	grid-template-columns: $upperel-gallery-thumb-width-mobile minmax(0, 1fr);
-	column-gap: 12px;
-	align-items: start;
-
-	@media (min-width: $desktop) {
-		grid-template-columns: $upperel-gallery-thumb-width minmax(0, 1fr);
-		column-gap: 16px;
-	}
 
 	> .flex-viewport {
-		grid-row: 1;
-		grid-column: 2;
-		margin-bottom: 0; // Storefront spaces it from a thumbnail strip below.
-	}
-
-	// Main image against the thumbnails rather than centred in its column
-	// (a portrait image capped to the screen height is narrower than it).
-	.woocommerce-product-gallery__image > a img {
-		margin-left: 0;
+		margin-bottom: 12px; // Phones: space above the row of thumbnails.
 	}
 
 	> .flex-control-thumbs {
-		grid-row: 1;
-		grid-column: 1;
 		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		align-self: stretch;
-		height: 0;
-		min-height: 100%;
+		gap: 8px;
 		margin: 0;
-		padding: 0 2px; // Room for the focus outline.
-		overflow-y: auto;
+		padding: 2px; // Room for the focus outline.
+		overflow-x: auto;
 		scrollbar-width: thin;
 
-		// Storefront's clearfix pseudo-elements would become column items.
+		// Storefront's clearfix pseudo-elements would become flex items.
 		&::before,
 		&::after {
 			display: none;
@@ -151,10 +132,9 @@ $upperel-gallery-control-color: #333;
 		// Storefront floats the thumbnails in rows by column count.
 		li {
 			float: none;
-			flex: none;
-			width: 100% !important;
+			flex: 0 0 $upperel-gallery-thumb-width-mobile;
+			width: $upperel-gallery-thumb-width-mobile !important;
 			margin: 0 !important;
-			padding-top: 2px;
 		}
 
 		img {
@@ -182,6 +162,50 @@ $upperel-gallery-control-color: #333;
 				opacity: 1;
 			}
 		}
+	}
+
+	@media (min-width: $handheld) {
+		display: grid;
+		grid-template-columns: $upperel-gallery-thumb-width-tablet minmax(0, 1fr);
+		column-gap: 12px;
+		align-items: start;
+
+		> .flex-viewport {
+			grid-row: 1;
+			grid-column: 2;
+			margin-bottom: 0;
+		}
+
+		// Main image against the thumbnails rather than centred in its
+		// column (a portrait image capped to the screen height is narrower
+		// than it).
+		.woocommerce-product-gallery__image > a img {
+			margin-left: 0;
+		}
+
+		> .flex-control-thumbs {
+			grid-row: 1;
+			grid-column: 1;
+			flex-direction: column;
+			gap: 12px;
+			align-self: stretch;
+			height: 0;
+			min-height: 100%;
+			padding: 0 2px;
+			overflow-x: visible;
+			overflow-y: auto;
+
+			li {
+				flex: none;
+				width: 100% !important;
+				padding-top: 2px;
+			}
+		}
+	}
+
+	@media (min-width: $desktop) {
+		grid-template-columns: $upperel-gallery-thumb-width minmax(0, 1fr);
+		column-gap: 16px;
 	}
 }
 
