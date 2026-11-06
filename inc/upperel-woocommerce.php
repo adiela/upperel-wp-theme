@@ -312,3 +312,51 @@ function upperel_remove_product_pagination() {
 	remove_action( 'woocommerce_after_single_product_summary', 'storefront_single_product_pagination', 30 );
 }
 add_action( 'after_setup_theme', 'upperel_remove_product_pagination', 20 );
+
+/**
+ * Product grids: the same number of products per row everywhere, taken
+ * from the shop setting (Customize → WooCommerce → Product Catalog →
+ * Products per row), instead of Storefront's fixed counts (3 for Related
+ * products, upsells and categories; 4 for the homepage sections).
+ *
+ * Grids with their own explicit setting keep it: [products columns="…"]
+ * shortcodes and WooCommerce block grids.
+ *
+ * @return int Products per row.
+ */
+function upperel_products_per_row() {
+	return max( 1, (int) wc_get_default_products_per_row() );
+}
+
+/**
+ * Related products: one full row.
+ *
+ * @param array $args Related products args.
+ * @return array
+ */
+function upperel_related_products_args( $args ) {
+	$args['columns']        = upperel_products_per_row();
+	$args['posts_per_page'] = upperel_products_per_row();
+	return $args;
+}
+add_filter( 'storefront_related_products_args', 'upperel_related_products_args' );
+
+add_filter( 'storefront_upsells_columns', 'upperel_products_per_row' );
+add_filter( 'woocommerce_cross_sells_columns', 'upperel_products_per_row' );
+
+/**
+ * Storefront homepage sections (Shop by category, Recent, Featured,
+ * Popular, On sale, Best sellers): one full row each.
+ *
+ * @param array $args Section args.
+ * @return array
+ */
+function upperel_homepage_section_args( $args ) {
+	$args['columns'] = upperel_products_per_row();
+	$args['limit']   = upperel_products_per_row();
+	return $args;
+}
+foreach ( array( 'product_categories', 'recent_products', 'featured_products', 'popular_products', 'on_sale_products', 'best_selling_products' ) as $upperel_section ) {
+	add_filter( "storefront_{$upperel_section}_args", 'upperel_homepage_section_args' );
+}
+unset( $upperel_section );
