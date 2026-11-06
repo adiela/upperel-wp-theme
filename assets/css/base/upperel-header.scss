@@ -12,6 +12,7 @@
  */
 
 $upperel-desktop: 768px;
+$upperel-wide: 1024px; // Centred-logo layout.
 $upperel-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 $upperel-search-speed: 0.35s;
 $upperel-gutter: 1.41575em; // Storefront's mobile .col-full side margin.
@@ -41,6 +42,47 @@ $upperel-bleed: calc(50% - 50vw);
 		@media (min-width: $upperel-desktop) {
 			gap: 24px;
 			min-height: 76px;
+		}
+	}
+
+	// "Logo in the centre, menu on the left" (Customize → Header →
+	// Desktop layout): three columns, the outer two equal so the logo is
+	// centred on the page whatever the menu and icons' widths. Without a
+	// menu the left column stays empty and the logo stays centred.
+	// From $upperel-wide up: on tablets a third of the row is too narrow
+	// for the menu, so they keep the logo-left layout.
+	@media (min-width: $upperel-wide) {
+
+		.upperel-header--logo-center {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+
+			.main-navigation {
+				grid-row: 1;
+				grid-column: 1;
+				justify-self: start;
+				max-width: 100%;
+			}
+
+			.site-branding {
+				grid-row: 1;
+				grid-column: 2;
+			}
+
+			.upperel-header-actions {
+				grid-row: 1;
+				grid-column: 3;
+				justify-self: end;
+				margin-inline-start: 0;
+			}
+
+			// The search bar opens leftwards from the magnifying glass; keep
+			// it between the logo and the icons. 316px: half the logo
+			// (100px), the column gap (24px), the icons (144px), the row's
+			// side margins (~42px) and a little breathing room.
+			.upperel-header-search__panel {
+				width: min(320px, calc(50vw - 316px));
+			}
 		}
 	}
 

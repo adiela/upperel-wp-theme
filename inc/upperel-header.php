@@ -119,14 +119,70 @@ function upperel_header_customize_register( $wp_customize ) {
 			'priority'    => 5,
 		)
 	);
+
+	$wp_customize->add_setting(
+		'upperel_header_layout',
+		array(
+			'default'           => 'logo-left',
+			'sanitize_callback' => 'upperel_sanitize_header_layout',
+		)
+	);
+
+	$wp_customize->add_control(
+		'upperel_header_layout',
+		array(
+			'type'        => 'radio',
+			'label'       => __( 'Desktop layout', 'storefront' ),
+			'description' => __( 'On phones the logo stays on the left, with the Menu button on the right.', 'storefront' ),
+			'section'     => 'header_image',
+			'priority'    => 4,
+			'choices'     => upperel_header_layouts(),
+		)
+	);
 }
 add_action( 'customize_register', 'upperel_header_customize_register', 20 );
 
 /**
- * Open the header row.
+ * Open the header row, with a class for the desktop layout chosen in the
+ * Customizer (see upperel_header_layout()).
  */
 function upperel_header_container() {
-	echo '<div class="col-full upperel-header">';
+	$class = 'col-full upperel-header';
+	if ( 'logo-center' === upperel_header_layout() ) {
+		$class .= ' upperel-header--logo-center';
+	}
+	echo '<div class="' . esc_attr( $class ) . '">';
+}
+
+/**
+ * Desktop header layouts (Customize → Header → "Desktop layout").
+ *
+ * @return array Layout => label.
+ */
+function upperel_header_layouts() {
+	return array(
+		'logo-left'   => __( 'Logo on the left, menu beside it', 'storefront' ),
+		'logo-center' => __( 'Logo in the centre, menu on the left', 'storefront' ),
+	);
+}
+
+/**
+ * The chosen desktop header layout.
+ *
+ * @return string A key of upperel_header_layouts().
+ */
+function upperel_header_layout() {
+	return upperel_sanitize_header_layout( get_theme_mod( 'upperel_header_layout', 'logo-left' ) );
+}
+
+/**
+ * Keep only a known header layout.
+ *
+ * @param string $value Chosen layout.
+ * @return string
+ */
+function upperel_sanitize_header_layout( $value ) {
+	return array_key_exists( $value, upperel_header_layouts() ) ? $value : 'logo-left';
 }
 
 /**
