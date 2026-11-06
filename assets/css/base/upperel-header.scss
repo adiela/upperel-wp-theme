@@ -159,6 +159,15 @@ $upperel-bleed: calc(50% - 50vw);
 		.handheld-navigation a {
 			text-transform: uppercase;
 			letter-spacing: 0.06em;
+			transition: color 0.2s ease;
+		}
+
+		// Hover: the Customizer's "Link color" (inc/upperel-links.php),
+		// instead of Storefront's lighter shade of the header link colour.
+		.primary-navigation a:hover,
+		.primary-navigation li:hover > a,
+		.handheld-navigation a:hover {
+			color: var(--upperel-link-color, #333);
 		}
 	}
 
@@ -223,11 +232,12 @@ $upperel-bleed: calc(50% - 50vw);
 		text-decoration: none;
 		text-shadow: none;
 		cursor: pointer;
-		transition: background-color 0.2s ease;
+		transition: background-color 0.2s ease, color 0.2s ease;
 
+		// Hover: the Customizer's "Link color" (inc/upperel-links.php).
 		&:hover {
 			background: rgba(127, 127, 127, 0.14);
-			color: var(--upperel-header-link, #333);
+			color: var(--upperel-link-color, #333);
 		}
 
 		&:focus-visible {
