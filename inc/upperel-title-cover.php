@@ -7,7 +7,9 @@
  * under the site header (over the image, with a dark overlay) instead of
  * at the top of the content. Titles are uppercase either way.
  *
- * - Pages: "Title cover image" box in the page editor sidebar.
+ * - Pages: "Page title" box in the page editor sidebar, which also has a
+ *   "Hide page title" option (the title is then kept for screen readers
+ *   only; a cover image still shows, without the title over it).
  * - Terms: "Title cover image" field on the add/edit category or tag
  *   screens.
  * - Admin picker: assets/js/admin/title-cover.js (WordPress media library).
@@ -26,6 +28,16 @@ function upperel_title_cover_taxonomies() {
 }
 
 const UPPEREL_TITLE_COVER_META = '_upperel_title_cover';
+const UPPEREL_HIDE_TITLE_META  = '_upperel_hide_title';
+
+/**
+ * Whether the current page's title is set to be hidden.
+ *
+ * @return bool
+ */
+function upperel_is_page_title_hidden() {
+	return is_page() && (bool) get_post_meta( get_queried_object_id(), UPPEREL_HIDE_TITLE_META, true );
+}
 
 /**
  * The cover image (attachment ID) for the current page or term archive.
@@ -88,9 +100,11 @@ function upperel_title_cover_banner() {
 			)
 		);
 		?>
-		<div class="col-full upperel-title-cover__inner">
-			<h1 class="upperel-title-cover__title"><?php echo esc_html( upperel_get_title_cover_title() ); ?></h1>
-		</div>
+		<?php if ( ! upperel_is_page_title_hidden() ) : ?>
+			<div class="col-full upperel-title-cover__inner">
+				<h1 class="upperel-title-cover__title"><?php echo esc_html( upperel_get_title_cover_title() ); ?></h1>
+			</div>
+		<?php endif; ?>
 	</div>
 	<?php
 }
@@ -112,15 +126,23 @@ function upperel_title_cover_body_class( $classes ) {
 add_filter( 'body_class', 'upperel_title_cover_body_class' );
 
 /**
- * Pages: Storefront's page header, minus the title when the banner shows it.
+ * Pages: Storefront's page header, minus the title when the banner shows it
+ * or the page is set to hide it.
  */
 function upperel_page_header() {
-	if ( ! upperel_get_title_cover_id() ) {
+	$hidden = upperel_is_page_title_hidden();
+
+	if ( ! $hidden && ! upperel_get_title_cover_id() ) {
 		storefront_page_header();
 		return;
 	}
 
-	// Keep the featured image, if any; the title is in the banner.
+	// Hidden title: keep it for screen readers so the page still has a heading.
+	if ( $hidden ) {
+		the_title( '<h1 class="entry-title screen-reader-text">', '</h1>' );
+	}
+
+	// Keep the featured image, if any; the title is in the banner or hidden.
 	if ( has_post_thumbnail() ) {
 		?>
 		<header class="entry-header">
@@ -158,8 +180,9 @@ add_filter( 'woocommerce_show_page_title', 'upperel_title_cover_hide_product_tit
  */
 
 /**
- * "Title cover image" box in the page editor sidebar (not on the Shop page,
- * whose title is hidden and which uses the slider).
+ * "Page title" box in the page editor sidebar: hide-title option and cover
+ * image (not on the Shop page, whose title is hidden and which uses the
+ * slider).
  *
  * @param WP_Post $post The page being edited.
  */
@@ -167,7 +190,7 @@ function upperel_title_cover_add_meta_box( $post ) {
 	if ( function_exists( 'wc_get_page_id' ) && (int) wc_get_page_id( 'shop' ) === (int) $post->ID ) {
 		return;
 	}
-	add_meta_box( 'upperel-title-cover', __( 'Title cover image', 'storefront' ), 'upperel_title_cover_meta_box', 'page', 'side', 'low' );
+	add_meta_box( 'upperel-title-cover', __( 'Page title', 'storefront' ), 'upperel_title_cover_meta_box', 'page', 'side', 'low' );
 }
 add_action( 'add_meta_boxes_page', 'upperel_title_cover_add_meta_box' );
 
@@ -178,6 +201,15 @@ add_action( 'add_meta_boxes_page', 'upperel_title_cover_add_meta_box' );
  */
 function upperel_title_cover_meta_box( $post ) {
 	wp_nonce_field( 'upperel_title_cover', 'upperel_title_cover_nonce' );
+	?>
+	<p>
+		<label>
+			<input type="checkbox" name="upperel_hide_title" value="1" <?php checked( (bool) get_post_meta( $post->ID, UPPEREL_HIDE_TITLE_META, true ) ); ?> />
+			<?php esc_html_e( 'Hide page title', 'storefront' ); ?>
+		</label>
+	</p>
+	<p><strong><?php esc_html_e( 'Title cover image', 'storefront' ); ?></strong></p>
+	<?php
 	upperel_title_cover_field( (int) get_post_meta( $post->ID, UPPEREL_TITLE_COVER_META, true ) );
 	echo '<p class="description">' . esc_html__( 'Shown behind the page title as a full-width banner.', 'storefront' ) . '</p>';
 }
@@ -197,6 +229,12 @@ function upperel_title_cover_save_page( $post_id ) {
 		return;
 	}
 	upperel_title_cover_save( 'post', $post_id );
+
+	if ( ! empty( $_POST['upperel_hide_title'] ) ) {
+		update_post_meta( $post_id, UPPEREL_HIDE_TITLE_META, 1 );
+	} else {
+		delete_post_meta( $post_id, UPPEREL_HIDE_TITLE_META );
+	}
 }
 add_action( 'save_post_page', 'upperel_title_cover_save_page' );
 
