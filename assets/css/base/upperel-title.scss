@@ -52,8 +52,10 @@ $upperel-title-tracking: 0.06em;
 	}
 }
 
-// The banner replaces Storefront's space below the site header.
-.has-title-cover #masthead {
+// The banner replaces Storefront's space below the site header. Pages with
+// a hidden title drop it too, so the content starts right under the header.
+.has-title-cover #masthead,
+.has-hidden-title #masthead {
 	margin-bottom: 0;
 }
 

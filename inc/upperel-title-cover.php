@@ -111,8 +111,8 @@ function upperel_title_cover_banner() {
 add_action( 'storefront_before_content', 'upperel_title_cover_banner', 5 );
 
 /**
- * Body class, so the space below the site header can be dropped when the
- * banner sits there.
+ * Body classes, so the space below the site header can be dropped when the
+ * banner sits there or the page title is hidden.
  *
  * @param array $classes Body classes.
  * @return array
@@ -120,6 +120,9 @@ add_action( 'storefront_before_content', 'upperel_title_cover_banner', 5 );
 function upperel_title_cover_body_class( $classes ) {
 	if ( upperel_get_title_cover_id() ) {
 		$classes[] = 'has-title-cover';
+	}
+	if ( upperel_is_page_title_hidden() ) {
+		$classes[] = 'has-hidden-title';
 	}
 	return $classes;
 }
