@@ -1,14 +1,14 @@
-# <!=Copyright (C) 2025 Automattic
+# <!=Copyright (C) 2026 Automattic
 # This file is distributed under the GNU General Public License v3 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Storefront 4.6.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/storefront\n"
-"POT-Creation-Date: 2025-12-09 11:55:39+00:00\n"
+"Project-Id-Version: Upperel 0.0.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/upperel-theme\n"
+"POT-Creation-Date: 2026-11-07 12:28:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: node-wp-i18n 1.2.7\n"
@@ -23,7 +23,8 @@ msgid ""
 "below."
 msgstr ""
 
-#: 404.php:25 inc/woocommerce/storefront-woocommerce-template-functions.php:743
+#: 404.php:25 inc/upperel-header.php:263
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:752
 msgid "Search"
 msgstr ""
 
@@ -32,13 +33,56 @@ msgid "Promoted Products"
 msgstr ""
 
 #: 404.php:45 404.php:47
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:324
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:333
 msgid "Product Categories"
 msgstr ""
 
-#: 404.php:60 404.php:62
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:491
+#: 404.php:61 404.php:63
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:500
 msgid "Popular Products"
+msgstr ""
+
+#: blocks/image-slider/render.php:72
+msgid "carousel"
+msgstr ""
+
+#: blocks/image-slider/render.php:73
+msgid "Featured images"
+msgstr ""
+
+#: blocks/image-slider/render.php:100
+msgid "slide"
+msgstr ""
+
+#: blocks/image-slider/render.php:101
+#. translators: 1: slide number, 2: total slides
+msgid "%1$d of %2$d"
+msgstr ""
+
+#: blocks/image-slider/render.php:112
+#. translators: %d: slide number
+msgid "Slide %d"
+msgstr ""
+
+#: blocks/image-slider/render.php:127
+msgid "Previous slide"
+msgstr ""
+
+#: blocks/image-slider/render.php:130
+msgid "Next slide"
+msgstr ""
+
+#: blocks/image-slider/render.php:143 blocks/image-slider/render.php:144
+msgid "Pause slideshow"
+msgstr ""
+
+#: blocks/image-slider/render.php:145
+msgid "Play slideshow"
+msgstr ""
+
+#: blocks/image-slider/render.php:160
+#. translators: %d: slide number
+msgid "Go to slide %d"
 msgstr ""
 
 #: comments.php:21
@@ -341,7 +385,7 @@ msgid "Background color"
 msgstr ""
 
 #: inc/customizer/class-storefront-customizer.php:448
-#: inc/customizer/class-storefront-customizer.php:584
+#: inc/customizer/class-storefront-customizer.php:584 inc/upperel-links.php:42
 msgid "Link color"
 msgstr ""
 
@@ -544,6 +588,7 @@ msgid ""
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:76
+#: inc/upperel-footer.php:363
 msgid "Contact"
 msgstr ""
 
@@ -620,27 +665,27 @@ msgid "Vneck Tshirt"
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:1021
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:303
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:312
 msgid "Shop by Category"
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:1029
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:358
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:367
 msgid "New In"
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:1037
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:470
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:479
 msgid "Fan Favorites"
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:1043
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:526
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:535
 msgid "On Sale"
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:1049
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:582
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:591
 msgid "Best Sellers"
 msgstr ""
 
@@ -661,7 +706,7 @@ msgid ""
 msgstr ""
 
 #: inc/nux/class-storefront-nux-starter-content.php:1108
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:414
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:423
 msgid "We Recommend"
 msgstr ""
 
@@ -775,6 +820,310 @@ msgstr ""
 msgid "Previous post:"
 msgstr ""
 
+#: inc/upperel-footer.php:38
+msgid "Footer: Column 1"
+msgstr ""
+
+#: inc/upperel-footer.php:39
+msgid "Footer: Column 2"
+msgstr ""
+
+#: inc/upperel-footer.php:52
+msgid "Instagram"
+msgstr ""
+
+#: inc/upperel-footer.php:53
+msgid "Facebook"
+msgstr ""
+
+#: inc/upperel-footer.php:54
+msgid "TikTok"
+msgstr ""
+
+#: inc/upperel-footer.php:55
+msgid "X (Twitter)"
+msgstr ""
+
+#: inc/upperel-footer.php:56
+msgid "YouTube"
+msgstr ""
+
+#: inc/upperel-footer.php:57
+msgid "WhatsApp"
+msgstr ""
+
+#: inc/upperel-footer.php:67
+msgid "Clothing, bags and accessories."
+msgstr ""
+
+#: inc/upperel-footer.php:76
+msgid "© {year} {site}. All rights reserved."
+msgstr ""
+
+#: inc/upperel-footer.php:90
+msgid "About text"
+msgstr ""
+
+#: inc/upperel-footer.php:91
+msgid "Shown under the logo. Leave empty to hide it."
+msgstr ""
+
+#: inc/upperel-footer.php:97
+msgid "Phone number"
+msgstr ""
+
+#: inc/upperel-footer.php:98
+msgid "The address comes from WooCommerce → Settings → General."
+msgstr ""
+
+#: inc/upperel-footer.php:103
+msgid "Email address"
+msgstr ""
+
+#: inc/upperel-footer.php:108
+msgid "Copyright line"
+msgstr ""
+
+#: inc/upperel-footer.php:109
+msgid "{year} is replaced by the current year and {site} by the site title."
+msgstr ""
+
+#: inc/upperel-footer.php:119
+#. translators: %s: social network name.
+msgid "%s link"
+msgstr ""
+
+#: inc/upperel-footer.php:120
+msgid "e.g. https://wa.me/254700000000"
+msgstr ""
+
+#: inc/upperel-footer.php:213
+msgid "All products"
+msgstr ""
+
+#: inc/upperel-footer.php:217 inc/upperel-header.php:282
+msgid "My account"
+msgstr ""
+
+#: inc/upperel-footer.php:218
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:768
+msgid "Cart"
+msgstr ""
+
+#: inc/upperel-footer.php:219
+msgid "Checkout"
+msgstr ""
+
+#: inc/upperel-footer.php:320
+msgid "Shop"
+msgstr ""
+
+#: inc/upperel-footer.php:321
+msgid "Help"
+msgstr ""
+
+#: inc/upperel-footer.php:346
+#. translators: %s: social network name.
+msgid "%s (opens in a new tab)"
+msgstr ""
+
+#: inc/upperel-header.php:116
+msgid "Show the menu"
+msgstr ""
+
+#: inc/upperel-header.php:117
+msgid ""
+"Edit its links in Menus (the Primary Menu location; the Handheld Menu "
+"location for mobile, if set, or the same menu)."
+msgstr ""
+
+#: inc/upperel-header.php:135
+msgid "Desktop layout"
+msgstr ""
+
+#: inc/upperel-header.php:136
+msgid "On phones the logo stays on the left, with the Menu button on the right."
+msgstr ""
+
+#: inc/upperel-header.php:164
+msgid "Logo on the left, menu beside it"
+msgstr ""
+
+#: inc/upperel-header.php:165
+msgid "Logo in the centre, menu on the left"
+msgstr ""
+
+#: inc/upperel-header.php:228
+#. translators: %d: number of items in the cart
+msgid "Cart, %d item"
+msgid_plural "Cart, %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/upperel-header.php:247
+msgid "Search for products"
+msgstr ""
+
+#: inc/upperel-header.php:247
+msgid "Search for"
+msgstr ""
+
+#: inc/upperel-header.php:255
+msgid "Search products…"
+msgstr ""
+
+#: inc/upperel-header.php:255
+msgid "Search…"
+msgstr ""
+
+#: inc/upperel-header.php:273 inc/upperel-header.php:274
+msgid "Open search"
+msgstr ""
+
+#: inc/upperel-header.php:275
+msgid "Close search"
+msgstr ""
+
+#: inc/upperel-links.php:52
+msgid "Accent color"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:102
+msgid "Category"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:108
+msgid "Tag"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:109
+msgid "Brand"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:139 inc/upperel-shop-filters.php:548
+msgid "Price"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:150
+msgid "Availability"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:403
+#. translators: 1: minimum price, 2: maximum price.
+msgid "Price: %1$s – %2$s"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:406
+#. translators: %s: minimum price.
+msgid "Price: from %s"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:409
+#. translators: %s: maximum price.
+msgid "Price: up to %s"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:440 inc/upperel-shop-filters.php:525
+msgid "Filters"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:447
+#. translators: %s: number of active filters.
+msgid "(%s active)"
+msgid_plural "(%s active)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/upperel-shop-filters.php:470
+msgid "Active filters"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:477
+msgid "(remove filter)"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:482 inc/upperel-shop-filters.php:591
+msgid "Clear all"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:526
+msgid "Close filters"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:553
+#. translators: %s: currency symbol.
+msgid "Price (%s)"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:557
+msgid "Min"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:562
+msgid "Max"
+msgstr ""
+
+#: inc/upperel-shop-filters.php:592
+msgid "Show results"
+msgstr ""
+
+#: inc/upperel-styles.php:97
+msgid "Close notice"
+msgstr ""
+
+#: inc/upperel-title-cover.php:170 inc/upperel-title-cover.php:216
+#: inc/upperel-title-cover.php:231 inc/upperel-title-cover.php:343
+msgid "Title cover image"
+msgstr ""
+
+#: inc/upperel-title-cover.php:182
+msgid "Shown behind the page title as a full-width banner."
+msgstr ""
+
+#: inc/upperel-title-cover.php:218 inc/upperel-title-cover.php:237
+msgid "Shown behind the title on this archive page as a full-width banner."
+msgstr ""
+
+#: inc/upperel-title-cover.php:288 inc/upperel-title-cover.php:289
+msgid "Select image"
+msgstr ""
+
+#: inc/upperel-title-cover.php:288 inc/upperel-title-cover.php:289
+msgid "Replace image"
+msgstr ""
+
+#: inc/upperel-title-cover.php:292
+msgid "Remove"
+msgstr ""
+
+#: inc/upperel-title-cover.php:344
+msgid "Use this image"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:113
+msgid "Shipping calculated at checkout."
+msgstr ""
+
+#: inc/upperel-woocommerce.php:137
+msgid "Description"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:145
+msgid "Attributes"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:172
+msgid "Product information"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:272
+msgid "Reduce quantity"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:282
+msgid "Increase quantity"
+msgstr ""
+
 #: inc/woocommerce/class-storefront-woocommerce-customizer.php:60
 msgid "Product Page"
 msgstr ""
@@ -800,67 +1149,63 @@ msgid ""
 "displayed with the title revealed on hover."
 msgstr ""
 
-#: inc/woocommerce/class-storefront-woocommerce.php:226
+#: inc/woocommerce/class-storefront-woocommerce.php:222
 msgid "breadcrumbs"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:91
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:100
 msgid "View your shopping cart"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:93
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:102
 #. translators: %d: number of items in cart
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:379
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:388
 msgid "Recent Products"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:436
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:641
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:445
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:650
 msgid "Featured Products"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:548
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:557
 msgid "On Sale Products"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:603
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:612
 msgid "Best Selling Products"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:654
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:663
 msgid "On Sale Now"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:667
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:676
 msgid "New In Store"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:759
-msgid "Cart"
-msgstr ""
-
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:773
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:782
 msgid "My Account"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:803
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:812
 msgid "More products"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:867
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:876
 msgid "You're viewing:"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:903
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:912
 msgid "Shop by Brand"
 msgstr ""
 
-#: inc/woocommerce/storefront-woocommerce-template-functions.php:920
+#: inc/woocommerce/storefront-woocommerce-template-functions.php:929
 msgid "Product Brands"
 msgstr ""
 
@@ -870,23 +1215,15 @@ msgid "Search Results for: %s"
 msgstr ""
 
 #. Theme Name of the plugin/theme
-msgid "Storefront"
+msgid "Upperel"
 msgstr ""
 
 #. Theme URI of the plugin/theme
-msgid "https://woocommerce.com/products/storefront/"
+msgid "https://github.com/adiela/upperel-wp-theme/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid ""
-"Storefront is the perfect theme for your next WooCommerce project. Designed "
-"and developed by WooCommerce Core developers, it features a bespoke "
-"integration with WooCommerce itself plus many of the most popular customer "
-"facing WooCommerce extensions. There are several layout & color options to "
-"personalise your shop, multiple widget regions, a responsive design and "
-"much more. Developers will love its lean and extensible codebase making it "
-"a joy to customize and extend. Looking for a WooCommerce theme? Look no "
-"further!"
+msgid "Theme based of the default woocomerce theme storefront."
 msgstr ""
 
 #. Author of the plugin/theme
@@ -894,7 +1231,7 @@ msgid "Automattic"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://woocommerce.com/"
+msgid "https://github.com/adiela"
 msgstr ""
 
 #. Template Name of the plugin/theme
