@@ -34,7 +34,18 @@ button.upperel-filters-toggle {
 	font-size: 1em;
 	font-weight: var(--upperel-button-font-weight); // Set in upperel-buttons.scss.
 	line-height: 1.618;
-	box-shadow: none;
+	box-shadow: var(--upperel-button-shadow); // Set in upperel-buttons.scss.
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+	&:hover {
+		box-shadow: var(--upperel-button-shadow-hover);
+		transform: translateY(-1px);
+	}
+
+	&:active {
+		box-shadow: var(--upperel-button-shadow-active);
+		transform: none;
+	}
 
 	&:hover,
 	&:focus {

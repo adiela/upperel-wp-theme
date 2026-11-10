@@ -519,9 +519,10 @@ $upperel-grid-gap-mobile: 12px;
 }
 
 // Single product: variation buttons (assets/js/single-product.js) in place
-// of the variation dropdowns. Outlined; the selected one is filled.
+// of the variation dropdowns. Outlined, with text in the border colour;
+// the selected one is filled with the border colour.
 // Options that don't match the other choices are faded and struck through.
-$upperel-swatch-color: #333;
+$upperel-swatch-focus: #333; // Keyboard focus outline.
 // Border: the buttons' colour (outlined buttons' border, solid buttons'
 // background), printed as --upperel-button-bg by inc/upperel-styles.php.
 $upperel-swatch-border: var(--upperel-button-bg, #96588a);
@@ -546,26 +547,26 @@ $upperel-swatch-border: var(--upperel-button-bg, #96588a);
 		border: 1px solid $upperel-swatch-border;
 		border-radius: 4px;
 		background: #fff;
-		box-shadow: none;
-		color: $upperel-swatch-color;
+		box-shadow: none; // Flat, unlike the buttons.
+		color: $upperel-swatch-border;
 		font-size: 14px;
 		font-weight: 400;
 		line-height: 1;
 		letter-spacing: normal;
-		text-transform: none;
+		text-transform: uppercase;
 		cursor: pointer;
 		transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 
 		&:hover:not(:disabled) {
 			border-color: $upperel-swatch-border;
 			background: #fff;
-			color: $upperel-swatch-color;
+			color: $upperel-swatch-border;
 		}
 
 		&[aria-pressed="true"],
 		&[aria-pressed="true"]:hover:not(:disabled) {
 			border-color: $upperel-swatch-border;
-			background: $upperel-swatch-color;
+			background: $upperel-swatch-border;
 			color: #fff;
 		}
 
@@ -575,8 +576,14 @@ $upperel-swatch-border: var(--upperel-button-bg, #96588a);
 			cursor: not-allowed;
 		}
 
+		// No outline after a click (Storefront outlines every focused
+		// button in purple); keyboard focus still gets the ring below.
+		&:focus {
+			outline: none;
+		}
+
 		&:focus-visible {
-			outline: 2px solid $upperel-swatch-color;
+			outline: 2px solid $upperel-swatch-focus;
 			outline-offset: 2px;
 		}
 	}

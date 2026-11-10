@@ -11,14 +11,19 @@
  */
 
 $upperel-button-radius: 4px; // Same as form fields (upperel-forms.scss).
-$upperel-button-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
-$upperel-button-shadow-hover: 0 6px 14px rgba(0, 0, 0, 0.2);
+$upperel-button-shadow: var(--upperel-button-shadow);
+$upperel-button-shadow-hover: var(--upperel-button-shadow-hover);
+$upperel-button-shadow-active: var(--upperel-button-shadow-active);
 
-// Button text weight, for every button: the action buttons below, the
-// shop's Filters button (upperel-filters.scss) and the mobile Menu button
-// (upperel-header.scss). Change it here. Storefront's was 600.
+// Button text weight and shadows, for every button: the action buttons
+// below, the shop's Filters button (upperel-filters.scss) and the mobile
+// Menu button (upperel-header.scss). Change them here. Storefront's weight
+// was 600.
 :root {
 	--upperel-button-font-weight: 400;
+	--upperel-button-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); // At rest.
+	--upperel-button-shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.35);
+	--upperel-button-shadow-active: 0 2px 4px rgba(0, 0, 0, 0.3); // Pressed.
 }
 
 .button,
@@ -45,7 +50,7 @@ input[type="submit"],
 	}
 
 	&:active {
-		box-shadow: $upperel-button-shadow;
+		box-shadow: $upperel-button-shadow-active;
 		transform: none;
 	}
 
@@ -53,6 +58,48 @@ input[type="submit"],
 	&.disabled {
 		box-shadow: none;
 		transform: none;
+	}
+}
+
+// Every other <button> on the site (plugin buttons and the like): the same
+// shadow, in place of Storefront's flat inset one. Icon and text controls
+// with no button box of their own are left flat: the header icons and
+// search submit, close (×) buttons, the quantity − / + buttons, the product
+// info tabs, the show-password eye, the mobile submenu toggles and the
+// single product page's attribute selectors. `:where` keeps this at
+// element specificity, so any button styled by class wins.
+$upperel-flat-buttons: (
+	".upperel-header-icon",
+	".upperel-header-search__submit",
+	".upperel-filters__close",
+	".upperel-notice__close",
+	".upperel-qty__button",
+	".upperel-product-info__tab",
+	".show-password-input",
+	".dropdown-toggle",
+	".upperel-swatch",
+);
+
+button:where(:not(#{$upperel-flat-buttons})) {
+	box-shadow: $upperel-button-shadow;
+	transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+
+	&:where(:hover:not(:disabled)) {
+		box-shadow: $upperel-button-shadow-hover;
+		transform: translateY(-1px);
+	}
+
+	&:where(:active),
+	&:where(:disabled) {
+		transform: none;
+	}
+
+	&:where(:active) {
+		box-shadow: $upperel-button-shadow-active;
+	}
+
+	&:where(:disabled) {
+		box-shadow: none;
 	}
 }
 

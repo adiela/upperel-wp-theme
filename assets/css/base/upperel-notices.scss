@@ -59,13 +59,7 @@
 		width: auto;
 		margin: -0.25em 0 0 1em;
 		padding: 0.35em 0.9em;
-		box-shadow: none;
-		font-size: 0.875em;
-
-		&:hover {
-			box-shadow: none;
-			transform: none;
-		}
+		font-size: 0.875em; // Shadow as the other buttons (upperel-buttons.scss).
 	}
 }
 

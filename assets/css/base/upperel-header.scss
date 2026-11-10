@@ -188,7 +188,19 @@ $upperel-bleed: calc(50% - 50vw);
 	.menu-toggle {
 		float: none;
 		margin: 0;
+		box-shadow: var(--upperel-button-shadow); // Set in upperel-buttons.scss.
 		font-weight: var(--upperel-button-font-weight); // Set in upperel-buttons.scss.
+		transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+		&:hover {
+			box-shadow: var(--upperel-button-shadow-hover);
+			transform: translateY(-1px);
+		}
+
+		&:active {
+			box-shadow: var(--upperel-button-shadow-active);
+			transform: none;
+		}
 	}
 
 	// Mobile: drop the opened menu below the header row, full width.
