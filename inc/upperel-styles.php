@@ -9,21 +9,19 @@
  */
 
 /**
- * Google Fonts: Poppins for headings and League Spartan for everything else
+ * Google Font: Poppins for all text, headings included
  * (font stacks in assets/css/sass/utils/_variables.scss), instead of
  * Storefront's Source Sans Pro. Storefront loads these on the front end
  * and in the block editor.
  *
  * Weights: Storefront's headings are light (300), the footer's headings
- * semi-bold (600); text uses 400, 600 and 700. League Spartan has no
- * italics, so browsers synthesise them.
+ * semi-bold (600); text uses 400, 600 and 700, with italics.
  *
  * @return array Google Fonts families.
  */
 function upperel_google_fonts() {
 	return array(
-		'poppins'        => 'Poppins:300,400,500,600,700',
-		'league-spartan' => 'League+Spartan:400,600,700',
+		'poppins' => 'Poppins:300,300italic,400,400italic,500,600,600italic,700,700italic',
 	);
 }
 add_filter( 'storefront_google_font_families', 'upperel_google_fonts' );
