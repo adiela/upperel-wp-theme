@@ -162,6 +162,16 @@ ul.products li.product .added_to_cart {
 	}
 }
 
+// Add to cart buttons (product page, and the shop/category grids, where
+// the same button reads "Select options" on variable products): letter
+// spacing wider than the other buttons' 0.06em.
+.single-product div.product form.cart .single_add_to_cart_button,
+ul.products li.product .add_to_cart_button,
+.wc-block-grid__product .add_to_cart_button,
+.wc-block-components-product-button__button {
+	letter-spacing: 0.15em;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
 	.button,
