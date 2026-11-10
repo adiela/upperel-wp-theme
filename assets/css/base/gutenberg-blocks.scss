@@ -85,6 +85,18 @@
 	}
 }
 
+// Pages whose content ends with a full-width block (e.g. the home page):
+// no gap between that block and the footer. Storefront leaves ~110px of
+// margin under the content.
+.content-area:has(.hentry > .entry-content > .alignfull:last-child) {
+
+	&,
+	.site-main,
+	.hentry {
+		margin-bottom: 0;
+	}
+}
+
 // Homepage
 .home.page-template-template-fullwidth {
 
@@ -393,11 +405,10 @@
 			}
 		}
 
-		// > 5.2 styling
+		// > 5.2 styling. Upperel: no width or padding here, so the block's
+		// own content position and padding settings apply (Storefront fixed
+		// the inner container at half the screen width, centred).
 		.wp-block-cover__inner-container {
-			padding: ms(5) ms(1);
-			width: calc(100vw - #{ms(1)});
-			max-width: calc(100vw - #{ms(1)});
 
 			*:nth-last-child(-n+1) {
 				margin-bottom: 0;
@@ -455,17 +466,6 @@
 				}
 			}
 
-			@media ( min-width: $handheld ) {
-				width: calc(8 * (100vw / 12 ));
-				max-width: calc(8 * (100vw / 12 ));
-			}
-
-			@media ( min-width: $desktop ) {
-				width: calc(6 * (100vw / 12 ));
-				max-width: calc(6 * (100vw / 12 ));
-				padding-top: ms(9);
-				padding-bottom: ms(9);
-			}
 		}
 
 		@media ( min-width: $container-width ) {
@@ -612,70 +612,9 @@
 		padding: ms(3);
 	}
 
-	// Columns
-	.wp-block-columns {
-
-		.wp-block-column {
-			margin-bottom: ms(1);
-
-			@media (min-width: 600px) {
-				padding-left: 0;
-				padding-right: gutter(12);
-				margin-left: 0;
-
-				&:not(:last-child) {
-					margin-right: 0;
-				}
-
-				&:nth-of-type(even) {
-					padding-right: 0;
-				}
-
-				body:not(.page-template-template-fullwidth-php):not(.storefront-full-width-content) & {
-					padding-right: gutter(9);
-
-					&:nth-of-type(even) {
-						padding-right: 0;
-					}
-				}
-			}
-		}
-
-		@media (min-width: 782px) {
-
-			@for $i from 2 through 6 {
-				&.has-#{$i}-columns {
-
-					.wp-block-column {
-						&:nth-of-type( #{$i}n ) {
-							margin-right: 0;
-						}
-					}
-				}
-			}
-
-			.wp-block-column {
-				padding-right: 0;
-
-				&:not(:first-child) {
-					padding-left: 0;
-				}
-
-				&:not(:last-child) {
-					padding-right: 0;
-					margin-right: gutter(12);
-				}
-
-				body:not(.page-template-template-fullwidth-php):not(.storefront-full-width-content) & {
-					padding-right: 0;
-
-					&:not(:last-child) {
-						margin-right: gutter(9);
-					}
-				}
-			}
-		}
-	}
+	// Columns: Upperel leaves spacing to the block's own settings (block
+	// spacing between columns, each column's padding). Storefront's fixed
+	// gutters and paddings overrode them.
 
 	// Latest Comments
 	.wp-block-latest-comments {

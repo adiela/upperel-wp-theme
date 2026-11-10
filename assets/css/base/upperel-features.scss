@@ -1,0 +1,50 @@
+/**
+ * Icons for feature columns (e.g. the home page's delivery / returns /
+ * payments / quality strip). Add "upperel-feature" plus one modifier to a
+ * Column block (Advanced → Additional CSS class):
+ * upperel-feature--delivery, --returns, --payments or --quality.
+ * Icons are Font Awesome (assets/css/base/icons.css).
+ */
+
+// The icon sits in a round badge on the left, vertically centred. Leave
+// room for it with the column's own left padding (70px; Styles →
+// Dimensions → Padding).
+.upperel-feature {
+	position: relative;
+
+	&::before {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 52px;
+		height: 52px;
+		border-radius: 50%;
+		background: #f1ebe4;
+		color: #2b2523;
+		font-family: "Font Awesome 5 Free";
+		font-size: 18px;
+		font-weight: 900;
+		line-height: 1;
+		transform: translateY(-50%);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	&--delivery::before {
+		content: "\f0d1"; // truck
+	}
+
+	&--returns::before {
+		content: "\f2ea"; // undo-alt
+	}
+
+	&--payments::before {
+		content: "\f3ed"; // shield-alt
+	}
+
+	&--quality::before {
+		content: "\f005"; // star
+	}
+}

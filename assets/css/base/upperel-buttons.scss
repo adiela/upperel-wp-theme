@@ -144,6 +144,21 @@ $upperel-button-bg: var(--upperel-button-bg, #96588a);
 	width: 100%;
 }
 
+// Buttons blocks with the "upperel-buttons-auto" class (Advanced →
+// Additional CSS class): buttons sized to their text, not full width.
+.wp-block-buttons.upperel-buttons-auto {
+
+	> .wp-block-button {
+		flex-basis: auto;
+		width: auto;
+	}
+
+	.wp-block-button__link {
+		width: auto;
+		padding: 0.875em 1.75em;
+	}
+}
+
 // Product grid: "View cart" link appears under the full-width button.
 ul.products li.product .added_to_cart {
 	margin-top: 0.5em;

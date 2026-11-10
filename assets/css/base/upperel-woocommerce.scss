@@ -613,6 +613,12 @@ $upperel-account-form-width: 640px;
 	}
 }
 
+// WooCommerce block product grids (Product Collection) are <ul>s; drop
+// Storefront's list indent so they line up with the content edge.
+ul.wc-block-product-template {
+	margin-left: 0;
+}
+
 // Product grid cards: lift with a soft shadow on hover (devices with a
 // real pointer, so it doesn't stick after a tap) and on keyboard focus.
 // Classic grids and WooCommerce block grids.
@@ -622,7 +628,7 @@ $upperel-account-form-width: 640px;
 	margin-bottom: $upperel-grid-gap; // Between rows (Storefront: ~60px).
 	padding: 12px;
 	border-radius: 6px;
-	background-color: #fff;
+	background-color: transparent; // Takes the section's background (e.g. the home page's cream).
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 
 	&:focus-within {
