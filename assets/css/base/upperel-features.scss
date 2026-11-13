@@ -48,3 +48,25 @@
 		content: "\f005"; // star
 	}
 }
+
+// Below WordPress's column-stacking breakpoint the strip's columns sit one
+// under another, so the desktop padding (32px top / bottom, set inline in
+// the block) plus the columns' gap makes the strip very tall. Tighten it.
+@media (max-width: 781px) {
+	.wp-block-columns:has(> .upperel-feature) {
+		gap: 0;
+		padding: 12px 0;
+	}
+
+	.upperel-feature {
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+		padding-left: 58px !important;
+
+		&::before {
+			width: 42px;
+			height: 42px;
+			font-size: 15px;
+		}
+	}
+}
