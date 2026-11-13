@@ -2,9 +2,9 @@
 # This file is distributed under the GNU General Public License v3 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Upperel 0.0.7\n"
+"Project-Id-Version: Upperel 0.0.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/upperel-theme\n"
-"POT-Creation-Date: 2026-11-13 10:36:52+00:00\n"
+"POT-Creation-Date: 2026-11-13 15:08:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1139,6 +1139,39 @@ msgstr ""
 
 #: inc/upperel-woocommerce.php:282
 msgid "Increase quantity"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:416 inc/upperel-woocommerce.php:436
+msgid "Size chart"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:437
+msgid "Close size chart"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:446
+msgid "Size"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:447
+msgid "Bust"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:447 inc/upperel-woocommerce.php:448
+#: inc/upperel-woocommerce.php:449
+msgid "cm / in"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:448
+msgid "Waist"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:449
+msgid "Hips"
+msgstr ""
+
+#: inc/upperel-woocommerce.php:450
+msgid "≈ UK size"
 msgstr ""
 
 #: inc/woocommerce/class-storefront-woocommerce-customizer.php:60

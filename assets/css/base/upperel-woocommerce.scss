@@ -653,3 +653,212 @@ ul.wc-block-product-template {
 		}
 	}
 }
+
+// Single product: "Size chart" link and modal (inc/upperel-woocommerce.php,
+// assets/js/single-product.js).
+$upperel-size-chart-ink: #333; // Same as the filter panel.
+$upperel-size-chart-line: rgba(127, 127, 127, 0.25);
+
+// Between the quantity field and the add-to-cart button, on a row of its
+// own.
+.single-product div.product form.cart .upperel-size-chart-link-wrap {
+	flex-basis: 100%;
+	width: 100%;
+	margin: 0 0 ms(1);
+}
+
+.single-product button.upperel-size-chart-link {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	box-shadow: none;
+	color: $upperel-size-chart-ink;
+	font-size: 0.875rem;
+	font-weight: 400;
+	letter-spacing: normal;
+	text-transform: none;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		background: none;
+		color: $upperel-size-chart-ink;
+		text-decoration-thickness: 2px;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $upperel-size-chart-ink;
+		outline-offset: 2px;
+	}
+}
+
+// The header and body fill the dialog, so a click on the dialog itself is
+// on the backdrop.
+.upperel-size-chart {
+	flex-direction: column;
+	width: min(640px, 100vw - 2rem);
+	max-width: none;
+	max-height: min(85vh, 100% - 2rem);
+	padding: 0;
+	border: 0;
+	border-radius: 4px;
+	background: #fff;
+	color: $color_body;
+	box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
+
+	&[open] {
+		display: flex;
+		animation: upperel-size-chart-in 0.2s ease-out;
+	}
+
+	&::backdrop {
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+
+		&[open] {
+			animation: none;
+		}
+	}
+}
+
+@keyframes upperel-size-chart-in {
+
+	from {
+		opacity: 0;
+		transform: translateY(1rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.upperel-size-chart__header {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1em;
+	padding: 1em 1.5em;
+	border-bottom: 1px solid $upperel-size-chart-line;
+}
+
+.upperel-size-chart__title {
+	margin: 0;
+	font-size: 1.25em;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+button.upperel-size-chart__close {
+	display: inline-flex;
+	margin: -0.5em -0.5em -0.5em 0;
+	padding: 0.5em;
+	border: 0;
+	background: none;
+	color: $upperel-size-chart-ink;
+	box-shadow: none;
+
+	&:hover,
+	&:focus {
+		background: none;
+		color: $upperel-size-chart-ink;
+	}
+
+	// No outline when the dialog opens and focuses it (Storefront outlines
+	// every focused button in purple); keyboard focus still gets the ring.
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $upperel-size-chart-ink;
+	}
+}
+
+// Scrolls in both directions if the table doesn't fit (narrow phones).
+.upperel-size-chart__body {
+	flex: 1;
+	overflow: auto;
+	overscroll-behavior: contain;
+	padding: 0.5em 1em 1em;
+
+	@media (min-width: $handheld) {
+		padding: 0.5em 1.5em 1.5em;
+	}
+}
+
+table.upperel-size-chart__table {
+	width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+	font-size: 0.8125rem;
+	line-height: 1.4;
+
+	@media (min-width: $handheld) {
+		font-size: 0.875rem;
+	}
+
+	th,
+	td {
+		padding: 0.75em 0.4em;
+		border-bottom: 1px solid $upperel-size-chart-line;
+		background: none;
+		text-align: left;
+		vertical-align: top;
+		white-space: nowrap;
+	}
+
+	th:first-child {
+		padding-left: 0;
+	}
+
+	th:last-child,
+	td:last-child {
+		padding-right: 0;
+	}
+
+	thead th {
+		color: $upperel-size-chart-ink;
+		font-weight: 600;
+		vertical-align: bottom;
+		white-space: normal;
+	}
+
+	tbody th {
+		color: $upperel-size-chart-ink;
+		font-weight: 600;
+	}
+
+	tbody tr:last-child th,
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+}
+
+.upperel-size-chart__cm,
+.upperel-size-chart__in,
+.upperel-size-chart__units {
+	display: block;
+}
+
+.upperel-size-chart__units {
+	font-size: 0.75rem;
+	font-weight: 400;
+	opacity: 0.7;
+}
+
+.upperel-size-chart__in {
+	font-size: 0.75rem;
+	opacity: 0.7;
+}

@@ -16,6 +16,10 @@
  *    the right section when the page is opened at, or a link points to,
  *    #reviews or a review (#comment-…), e.g. the "customer reviews" link by
  *    the price, or the redirect after posting a review.
+ *
+ * 5. Size chart (inc/upperel-woocommerce.php): the "Size chart" link opens
+ *    the chart as a modal dialog, which keeps focus inside it and closes on
+ *    Escape, its close button or a click on the backdrop.
  */
 ( function () {
 	'use strict';
@@ -337,6 +341,43 @@
 			sync();
 		} );
 	}
+
+	function initSizeChart( toggle ) {
+		const dialog = document.getElementById(
+			toggle.getAttribute( 'aria-controls' )
+		);
+		if ( ! dialog || typeof dialog.showModal !== 'function' ) {
+			toggle.closest( '.upperel-size-chart-link-wrap' ).remove();
+			return;
+		}
+
+		toggle.setAttribute( 'aria-expanded', 'false' );
+
+		toggle.addEventListener( 'click', function () {
+			dialog.showModal();
+			toggle.setAttribute( 'aria-expanded', 'true' );
+		} );
+
+		dialog.addEventListener( 'close', function () {
+			toggle.setAttribute( 'aria-expanded', 'false' );
+			toggle.focus();
+		} );
+
+		dialog.addEventListener( 'click', function ( e ) {
+			// A click on the dialog element itself is on the backdrop: the
+			// inner panel fills the whole dialog.
+			if (
+				e.target === dialog ||
+				e.target.closest( '[data-upperel-size-chart-close]' )
+			) {
+				dialog.close();
+			}
+		} );
+	}
+
+	document
+		.querySelectorAll( '.single-product .upperel-size-chart-link' )
+		.forEach( initSizeChart );
 
 	document
 		.querySelectorAll( '.single-product .quantity' )

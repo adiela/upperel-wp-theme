@@ -343,3 +343,130 @@ foreach ( array( 'product_categories', 'recent_products', 'featured_products', '
 	add_filter( "storefront_{$upperel_section}_args", 'upperel_homepage_section_args' );
 }
 unset( $upperel_section );
+
+/**
+ * Single product: the size chart rows. Each measurement is
+ * array( centimetres, inches ); the units are in the column headings.
+ *
+ * @return array
+ */
+function upperel_size_chart_rows() {
+	return array(
+		array( 'XS', array( '74–78', '29.1–30.7' ), array( '56–60', '22.0–23.6' ), array( '81–84.6', '31.9–33.3' ), '2' ),
+		array( 'S', array( '78–82', '30.7–32.3' ), array( '60–64', '23.6–25.2' ), array( '84.6–88.2', '33.3–34.7' ), '4–6' ),
+		array( 'M', array( '82–86', '32.3–33.9' ), array( '64–68', '25.2–26.8' ), array( '88.2–91.8', '34.7–36.1' ), '8' ),
+		array( 'L', array( '86–90', '33.9–35.4' ), array( '68–72', '26.8–28.3' ), array( '91.8–95.4', '36.1–37.6' ), '10' ),
+		array( 'XL', array( '90–94', '35.4–37.0' ), array( '72–76', '28.3–29.9' ), array( '95.4–99', '37.6–39.0' ), '12–14' ),
+		array( '2XL', array( '94–98', '37.0–38.6' ), array( '76–80', '29.9–31.5' ), array( '99–102.6', '39.0–40.4' ), '14–16' ),
+		array( '3XL', array( '98–102', '38.6–40.2' ), array( '80–84', '31.5–33.1' ), array( '102.6–106.2', '40.4–41.8' ), '16–18' ),
+	);
+}
+
+/**
+ * The product's size attribute, if it has one: any attribute whose name
+ * contains "size" (e.g. the global "Size" attribute, pa_size, or a custom
+ * "Sizes"). Products without one (bags, accessories) get no size chart.
+ *
+ * The upperel_show_size_chart filter can override that per product.
+ *
+ * @param WC_Product $product Product.
+ * @return bool
+ */
+function upperel_show_size_chart( $product ) {
+	return (bool) apply_filters( 'upperel_show_size_chart', upperel_product_has_size_attribute( $product ), $product );
+}
+
+/**
+ * See upperel_show_size_chart().
+ *
+ * @param WC_Product $product Product.
+ * @return bool
+ */
+function upperel_product_has_size_attribute( $product ) {
+	if ( ! $product ) {
+		return false;
+	}
+	foreach ( $product->get_attributes() as $key => $attribute ) {
+		$name = is_a( $attribute, 'WC_Product_Attribute' ) ? $attribute->get_name() : $key;
+		if ( false !== stripos( $name, 'size' ) || false !== stripos( wc_attribute_label( $name, $product ), 'size' ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Single product: a "Size chart" link, just above the add-to-cart button
+ * (after the quantity field), that opens the size chart in a modal
+ * <dialog> (assets/js/single-product.js, styled in
+ * upperel-woocommerce.scss).
+ *
+ * Shown only on products with a size attribute
+ * (upperel_show_size_chart()).
+ */
+function upperel_product_size_chart_link() {
+	global $product;
+
+	if ( ! is_product() || ! upperel_show_size_chart( $product ) ) {
+		return;
+	}
+	?>
+	<p class="upperel-size-chart-link-wrap">
+		<button type="button" class="upperel-size-chart-link" aria-haspopup="dialog" aria-controls="upperel-size-chart">
+			<?php esc_html_e( 'Size chart', 'storefront' ); ?>
+		</button>
+	</p>
+	<?php
+}
+add_action( 'woocommerce_after_add_to_cart_quantity', 'upperel_product_size_chart_link' );
+
+/**
+ * The size chart dialog, printed after the add-to-cart form (outside it).
+ * See upperel_product_size_chart_link().
+ */
+function upperel_product_size_chart() {
+	global $product;
+
+	if ( ! is_product() || ! upperel_show_size_chart( $product ) ) {
+		return;
+	}
+	?>
+	<dialog id="upperel-size-chart" class="upperel-size-chart" aria-labelledby="upperel-size-chart-title">
+		<div class="upperel-size-chart__header">
+			<h2 id="upperel-size-chart-title" class="upperel-size-chart__title"><?php esc_html_e( 'Size chart', 'storefront' ); ?></h2>
+			<button type="button" class="upperel-size-chart__close" data-upperel-size-chart-close aria-label="<?php esc_attr_e( 'Close size chart', 'storefront' ); ?>">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+			</button>
+		</div>
+		<div class="upperel-size-chart__body">
+			<?php // has-background: opts out of Storefront's striped table rows. ?>
+			<table class="upperel-size-chart__table has-background">
+				<thead>
+					<tr>
+						<th scope="col"><?php esc_html_e( 'Size', 'storefront' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Bust', 'storefront' ); ?> <span class="upperel-size-chart__units"><?php esc_html_e( 'cm / in', 'storefront' ); ?></span></th>
+						<th scope="col"><?php esc_html_e( 'Waist', 'storefront' ); ?> <span class="upperel-size-chart__units"><?php esc_html_e( 'cm / in', 'storefront' ); ?></span></th>
+						<th scope="col"><?php esc_html_e( 'Hips', 'storefront' ); ?> <span class="upperel-size-chart__units"><?php esc_html_e( 'cm / in', 'storefront' ); ?></span></th>
+						<th scope="col"><?php esc_html_e( '≈ UK size', 'storefront' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( upperel_size_chart_rows() as $row ) : ?>
+						<tr>
+							<th scope="row"><?php echo esc_html( $row[0] ); ?></th>
+							<?php foreach ( array( $row[1], $row[2], $row[3] ) as $measurement ) : ?>
+								<td>
+									<span class="upperel-size-chart__cm"><?php echo esc_html( $measurement[0] ); ?></span>
+									<span class="upperel-size-chart__in"><?php echo esc_html( $measurement[1] ); ?></span>
+								</td>
+							<?php endforeach; ?>
+							<td><?php echo esc_html( $row[4] ); ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</dialog>
+	<?php
+}
+add_action( 'woocommerce_after_add_to_cart_form', 'upperel_product_size_chart' );
