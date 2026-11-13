@@ -404,7 +404,16 @@ function upperel_footer_bottom() {
 	?>
 	<div class="upperel-footer-bottom site-info">
 		<?php if ( $copyright ) : ?>
-			<p class="upperel-footer-bottom__copyright"><?php echo esc_html( $copyright ); ?></p>
+			<p class="upperel-footer-bottom__copyright">
+				<?php echo esc_html( $copyright ); ?>
+				<?php
+				printf(
+					/* translators: %s: link to the site developer. */
+					esc_html__( 'Built by %s', 'storefront' ),
+					'<a href="https://ziadatech.com" target="_blank" rel="noopener">' . esc_html__( 'Ziada Technologies', 'storefront' ) . '</a>'
+				);
+				?>
+			</p>
 		<?php endif; ?>
 		<?php if ( $legal ) : ?>
 			<ul class="upperel-footer-bottom__links">

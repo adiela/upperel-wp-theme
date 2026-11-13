@@ -2,9 +2,9 @@
 # This file is distributed under the GNU General Public License v3 or later.=!>
 msgid ""
 msgstr ""
-"Project-Id-Version: Upperel 0.0.6\n"
+"Project-Id-Version: Upperel 0.0.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/upperel-theme\n"
-"POT-Creation-Date: 2026-11-13 08:59:40+00:00\n"
+"POT-Creation-Date: 2026-11-13 10:36:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -925,6 +925,15 @@ msgstr ""
 #: inc/upperel-footer.php:346
 #. translators: %s: social network name.
 msgid "%s (opens in a new tab)"
+msgstr ""
+
+#: inc/upperel-footer.php:412
+#. translators: %s: link to the site developer.
+msgid "Built by %s"
+msgstr ""
+
+#: inc/upperel-footer.php:413
+msgid "Ziada Technologies"
 msgstr ""
 
 #: inc/upperel-header.php:116
